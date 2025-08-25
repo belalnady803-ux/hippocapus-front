@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme { 
+    --color-primary : #0661FF;
+    --color-secondary : #08dff7;
+    --color-p1 : #B8C9E0;
+    --color-p2 : #121417;
+    --color-p3 : #6B7580;
+    --color-p4 : #FFFFFF;
+    --color-s1 : #EBEDF0;
+    --color-s2: #1A2633;
+    --color-dark-Cs : #334A66;
+    --color-dark-Cf : #1A2633;
+}
+
+@utility g1{
+    background : linear-gradient(to right, #00000000 0%, #0000008c 100%);
+}
+@utility g2{
+    background: linear-gradient(135deg, #08dff7, #0661ff);
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1252px;
+    padding-left: 64px;
+    padding-right: 64px;
+
+    @media (max-width: 1280px) { 
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    @media (max-width: 1024px) { 
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    @media (max-width: 640px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body{
+    font-family: "Lexend", sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure body responds to dark mode */
+body.dark {
+    background-color: #1e1e1e; /* Matches header and footer dark background */
+    color: #f9fafb; /* dark:text-gray-100 */
+}
+
+body.light {
+    background-color: #ffffff;
+    color: #111827;
+}
