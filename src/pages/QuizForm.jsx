@@ -162,7 +162,7 @@ const QuizForm = () => {
 
       // Save quiz
       await axios.post(
-        `${API_URL}/courses/${moduleId}/${videoId}/quiz`,
+        `${API_URL}/admin/courses/${moduleId}/${videoId}/quiz`,
         quiz
       );
 
