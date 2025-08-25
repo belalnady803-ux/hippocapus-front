@@ -35,7 +35,7 @@ return (
                     className={({isActive})=> {
                     const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
-                    return `${basicClass} dark:text-p4`
+                    return `${basicClass} dark:text-black`
                 }}>
                         My Courses
                     </NavLink>}
@@ -44,7 +44,7 @@ return (
                     className={({isActive})=> {
                     const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black", page.name==="Home" ? "min-md:hidden" : "")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
-                    return `${basicClass} dark:text-p4`
+                    return `${basicClass}`
                 }}>
                         {page.name}
                     </NavLink>

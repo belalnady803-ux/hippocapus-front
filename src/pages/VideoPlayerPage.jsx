@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import axios from "axios";
-import { useAuthStore } from "../store/authStore.js";
+import { API_URL, useAuthStore } from "../store/authStore.js";
 import Spinner from "../components/spinner"
+import WistiaPlayerFunction from '../components/WistiaPlayer.jsx'; // <-- update path as needed
 
 // Quiz Modal Component
 const QuizModal = ({ quiz, isOpen, onClose, onStartQuiz }) => {
@@ -53,7 +54,6 @@ const QuizModal = ({ quiz, isOpen, onClose, onStartQuiz }) => {
 
 
 
-
 export default function VideoPlayerPage() {
   const { id: courseId, videoId } = useParams();
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function VideoPlayerPage() {
     async function fetchVideoDetails() {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:8000/api/courses/${courseId}`);
+        const res = await axios.get(`${API_URL}/courses/${courseId}`);
         const course = res.data;
         setCourseTitle(course.title);
 
@@ -89,7 +89,7 @@ export default function VideoPlayerPage() {
           // Fetch quiz data if video has a quiz
           if (foundVideo.quiz) {
             try {
-              const quizRes = await axios.get(`http://localhost:8000/api/quizzes/${foundVideo.quiz}`);
+              const quizRes = await axios.get(`${API_URL}/quizzes/${foundVideo.quiz}`);
               setQuiz(quizRes.data);
             } catch (quizErr) {
               console.error("Failed to fetch quiz:", quizErr);
@@ -167,15 +167,6 @@ export default function VideoPlayerPage() {
     );
   }
 
-  // A simple function to get the YouTube embed URL
-  const getYouTubeEmbedUrl = (url) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
-  };
-
-  const embedUrl = getYouTubeEmbedUrl(video.url);
-
   return (
     <main className="bg-gray-50 dark:bg-gray-900 pt-24 min-h-screen flex flex-col items-center justify-center ">
       <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -186,11 +177,8 @@ export default function VideoPlayerPage() {
         </div>
         <div className="bg-p4 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <div className="aspect-video bg-black">
-            {embedUrl ? (
-              <iframe src={embedUrl} title={video.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-full"></iframe>
-            ) : (
-              <video controls autoPlay src={video.url} className="w-full h-full bg-black">Your browser does not support the video tag.</video>
-            )}
+            {/* Replace video display with wisitaPlayerFunction */}
+            {WistiaPlayerFunction(video.url)}
           </div>
           <div className="p-6">
             <div className="flex items-center gap-3 mb-2">
