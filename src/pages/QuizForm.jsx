@@ -20,7 +20,6 @@ const QuizForm = () => {
           { option: "", isCorrect: false },
           { option: "", isCorrect: false },
         ],
-        explanation: "",
       },
     ],
   });
