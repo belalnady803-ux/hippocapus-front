@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-export const API_URL = import.meta.env.MODE === "development" ? "http://localhost:8000/api" : "/api";
+export const API_URL = "https://hippocampus-y2yw.onrender.com/api";
 console.log("API_URL:", API_URL);
 axios.defaults.withCredentials = true;
 
@@ -98,3 +98,4 @@ export const useAuthStore = create((set) => ({
 
 
 export const signup = async (...args) => useAuthStore.getState().signup(...args);
+
