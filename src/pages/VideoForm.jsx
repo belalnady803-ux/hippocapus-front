@@ -67,8 +67,8 @@ const VideoForm = () => {
 
     try {
       const url = isEditMode
-        ? `http://localhost:8000/api/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
-        : `http://localhost:8000/api/admin/courses/${courseId}/modules/${moduleId}/video`;
+        ? `${API_URL}admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
+        : `${API_URL}admin/courses/${courseId}/modules/${moduleId}/video`;
 
       const method = isEditMode ? "put" : "post";
 
@@ -133,7 +133,6 @@ const VideoForm = () => {
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
                 <input
-                  type="url"
                   id="url"
                   name="url"
                   value={formData.url}
