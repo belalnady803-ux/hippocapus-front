@@ -111,10 +111,21 @@ const router = createBrowserRouter(createRoutesFromElements(
 
 export default function App() {
   const { checkAuth } = useAuthStore();
-
 	useEffect(() => {
 		checkAuth();
 	}, [checkAuth]);
+  useEffect(() => {
+    // Check for a token in localStorage when the app loads
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // If a token is found, you can set the user's authentication state
+      // This might involve decoding the token to get user info or
+      // setting an 'isAuthenticated' flag in your state management (Context, Redux, etc.)
+      console.log('User is already logged in.');
+      // Example: setUser(decodedToken.user);
+    }
+  }, []); // The empty array ensures this runs only once on mount
   return (
       <RouterProvider router={router} />
   );

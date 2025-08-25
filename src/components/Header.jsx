@@ -33,7 +33,7 @@ return (
                 max-sm:absolute max-sm:left-0 max-sm:flex-col max-sm:h-screen max-sm:gap-[32px] max-sm:justify-start max-sm:top-0  duration-500 transition-all max-sm:bg-[#FAFAFA] dark:bg-[#1e1e1e]`,activeBar ? "translate-x-[0]" : "max-sm:translate-x-[-100%]" )}>
                 {isAuthenticated && <NavLink to={"my-courses"} end  onClick={()=>{setActiveBar(prev => !prev)}}
                     className={({isActive})=> {
-                    const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12")
+                    const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
                     return `${basicClass} dark:text-p4`
                 }}>
@@ -42,7 +42,7 @@ return (
                 {pages.map((page,index)=>(
                     <NavLink to={page.path} end key={index} onClick={()=>{setActiveBar(prev => !prev)}}
                     className={({isActive})=> {
-                    const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12", page.name==="Home" ? "min-md:hidden" : "")
+                    const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black", page.name==="Home" ? "min-md:hidden" : "")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
                     return `${basicClass} dark:text-p4`
                 }}>

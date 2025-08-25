@@ -2,7 +2,6 @@ import { create } from "zustand";
 import axios from "axios";
 
 export const API_URL = "https://hippocampus-y2yw.onrender.com/api";
-console.log("API_URL:", API_URL);
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
@@ -33,6 +32,8 @@ export const useAuthStore = create((set) => ({
 				error: null,
 				isLoading: false,
 			});
+			localStorage.setItem('token', token);
+
 		} catch (error) {
 			set({ error: error.response?.data?.message || "Error logging in", isLoading: false });
 			throw error;
@@ -43,6 +44,8 @@ export const useAuthStore = create((set) => ({
 		try {
 			await axios.post(`${API_URL}/auth/logout`);
 			set({ user: null, isAuthenticated: false, error: null, isLoading: false });
+			localStorage.removeItem('token');
+
 		} catch (error) {
 			set({ error: "Error logging out", isLoading: false });
 			throw error;
@@ -98,4 +101,5 @@ export const useAuthStore = create((set) => ({
 
 
 export const signup = async (...args) => useAuthStore.getState().signup(...args);
+export const checkAuth = async () => useAuthStore.getState().checkAuth();
 
