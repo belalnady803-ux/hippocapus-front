@@ -67,8 +67,8 @@ const VideoForm = () => {
 
     try {
       const url = isEditMode
-        ? `${API_URL}admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
-        : `${API_URL}admin/courses/${courseId}/modules/${moduleId}/video`;
+        ? `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
+        : `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video`;
 
       const method = isEditMode ? "put" : "post";
 
