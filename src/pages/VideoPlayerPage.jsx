@@ -178,7 +178,7 @@ export default function VideoPlayerPage() {
         <div className="bg-p4 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <div className="aspect-video bg-black">
             {/* Replace video display with wisitaPlayerFunction */}
-            {WistiaPlayerFunction(video.url)}
+            <WistiaPlayerFunction wistiaId={video.url} />
           </div>
           <div className="p-6">
             <div className="flex items-center gap-3 mb-2">

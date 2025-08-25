@@ -53,11 +53,6 @@ const VideoForm = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-
-    // Update preview if URL changes
-    if (name === "url") {
-      setPreviewUrl(value);
-    }
   };
 
   const handleSubmit = async (e) => {
