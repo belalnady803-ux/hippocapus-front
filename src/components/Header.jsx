@@ -35,7 +35,7 @@ return (
                     className={({isActive})=> {
                     const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
-                    return `${basicClass} dark:text-black`
+                    return `${basicClass} dark:text-p4`
                 }}>
                         My Courses
                     </NavLink>}
@@ -44,7 +44,7 @@ return (
                     className={({isActive})=> {
                     const basicClass = clsx("font-bold text-[14px]  px-4 py-2 rounded-md transition-colors duration-200 max-sm:w-11-12 dark:text-black", page.name==="Home" ? "min-md:hidden" : "")
                     if(isActive) {return `${basicClass} bg-[#f0f2f4] font-semibold`}
-                    return `${basicClass}`
+                    return `${basicClass} dark:text-p4`
                 }}>
                         {page.name}
                     </NavLink>
@@ -68,7 +68,7 @@ return (
             {!isAuthenticated ? (
                 <button className='px-[16px] rounded-[20px] border border-primary h-[40px] text-p2 font-bold text-[14px] cursor-pointer'
                         onClick={()=>{}}>
-                    <Link to="/login">sign in</Link>
+                    <Link to="/login" className='dark:text-white'>sign in</Link>
                 </button>
                 ) : <UserProfile session={user} setIsHover={setIsHover}  isHover = {isHover} />} 
             </div>
