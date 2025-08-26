@@ -1,27 +1,14 @@
 import { coursesData } from "../assets/data.tsx";
-import { useTheme } from "../contexts/context.jsx";
-import { useNavigate } from "react-router";
 import useWhatsApp from '../Hooks/useWhatsApp';
 import Button from "./Button.jsx";
 
 const FeatureCourses = () => {
-    const { session } = useTheme();
-    const navigate = useNavigate();
     const number = "966566292547"; // This should ideally be in an environment variable
     const { openWhatsApp } = useWhatsApp(number);
-    const goToWhatsApp = () => {
+    const goToWhatsApp = (courseTitle) => {
         const message = `Hello, I want to enroll in the ${courseTitle} course. Could you please provide more details?`;
         openWhatsApp(message);
     }
-
-    const handleEnrollClick = () => {
-        if (session) {
-            goToWhatsApp(title);
-        } else {
-            navigate('/login?message=You must log in to enroll in a course.');
-        }
-    }
-
     return (
         <section className="py-[40px]">
             <div className="py-[12px] text-center">
@@ -54,7 +41,7 @@ const FeatureCourses = () => {
                         </div>
                         <div className="self-center pb-4">
                             <Button
-                                onClick={() => handleEnrollClick(course.title)}
+                                onClick={() => goToWhatsApp(course.title)}
                                 text="Enroll Now"
                             >
                             </Button>

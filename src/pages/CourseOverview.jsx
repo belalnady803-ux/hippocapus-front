@@ -31,7 +31,7 @@ export default function CourseOverview() {
     <div className="space-y-8">
       {/* Course Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-p4 mb-4">{course.title}</h1>
+        {/* <h1 className="text-4xl font-extrabold text-gray-900 dark:text-p4 mb-4">{course.title}</h1> */}
         {/* i might replace it with actual over view */}
         {/* <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{course.description}</p> */}
       </div>
