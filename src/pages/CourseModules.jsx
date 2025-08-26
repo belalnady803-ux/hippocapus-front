@@ -28,7 +28,7 @@ export default function CourseModules() {
         <Spinner />
       </main>;
   if (error) return <p className="text-center mt-20 text-red-500">{error}</p>;
-  if (!modules) return <p className="text-center mt-20 dark:text-p4">No modules found for this course.</p>;
+  if (!modules) return <p className="text-center mt-20 dark:text-p4">No subjects found for this course.</p>;
   const totalLectures = modules?.reduce((acc, mod) => acc + (mod.videos?.length || 0), 0) || 0;
   const totalQuizzes = modules?.reduce((acc, mod) => 
     acc + (mod.videos?.filter(vid => vid.quiz)?.length || 0), 0) || 0;
@@ -54,7 +54,7 @@ export default function CourseModules() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            {modules?.length || 0} modules
+            {modules?.length || 0} subjects
           </span>
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function CourseModules() {
           <svg className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-p4 mb-2">No modules available</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-p4 mb-2">No subjects available</h3>
           <p className="text-gray-500 dark:text-gray-400">Course content will be available soon.</p>
         </div>
       )}

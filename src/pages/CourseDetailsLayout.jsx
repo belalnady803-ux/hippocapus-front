@@ -92,7 +92,6 @@ const CourseDetailsLayout = () => { // Changed to a React component
             <div className="mb-8">
               <h1 className="text-4xl font-extrabold text-gray-900 dark:text-p4 mb-2">{course.title}</h1>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">{course.description}</p>
-              
               {/* Course Stats */}
               <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-6">
                 <div className="flex items-center gap-2">
@@ -135,7 +134,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
                       : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
-                  Modules
+                  subjects
                 </Link>
                 <Link
                   to={`/courses/${id}/reviews`}

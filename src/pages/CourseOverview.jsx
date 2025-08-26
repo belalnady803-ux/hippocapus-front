@@ -32,11 +32,12 @@ export default function CourseOverview() {
       {/* Course Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-p4 mb-4">{course.title}</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{course.description}</p>
+        {/* i might replace it with actual over view */}
+        {/* <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{course.description}</p> */}
       </div>
 
       {/* Course Highlights */}
-      <div className="bg-p4 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+      {/* <div className="bg-p4 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-p4 mb-4">What You'll Learn</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-start gap-3">
@@ -64,10 +65,10 @@ export default function CourseOverview() {
             <span className="text-gray-700 dark:text-gray-300">Expert-led instruction from medical professionals</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Course Requirements */}
-      <div className="bg-p4 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+      {/* <div className="bg-p4 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-p4 mb-4">Requirements</h2>
         <ul className="space-y-2 text-gray-700 dark:text-gray-300">
           <li className="flex items-start gap-3">
@@ -89,7 +90,7 @@ export default function CourseOverview() {
             <span>Dedication to learning and completing assignments</span>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       {/* Course Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -110,7 +111,7 @@ export default function CourseOverview() {
           <div className="text-3xl font-bold text-blue-600 dark:text-blue-500 mb-2">
             {course.modules?.length || 0}
           </div>
-          <div className="text-gray-600 dark:text-gray-400">Modules</div>
+          <div className="text-gray-600 dark:text-gray-400">subjects</div>
         </div>
       </div>
 

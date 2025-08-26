@@ -6,6 +6,7 @@ import { API_URL } from "../store/authStore";
 
 const QuizForm = () => {
   const { courseId, moduleId, videoId ,quizId } = useParams();
+  const isEditMode = !!quizId;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -85,7 +86,6 @@ const QuizForm = () => {
             { option: "", isCorrect: false },
             { option: "", isCorrect: false },
           ],
-          explanation: "",
         },
       ],
     }));
@@ -160,8 +160,14 @@ const QuizForm = () => {
       }
 
       // Save quiz
+      const endPont = !isEditMode  ? `${API_URL}/admin/courses/${moduleId}/${videoId}/quiz` : 
+      `${API_URL}/admin/courses/${moduleId}/${videoId}/quiz/${quizId}`;
+      isEditMode ? await axios.put(
+        endPont,
+        quiz
+      ) :
       await axios.post(
-        `${API_URL}/admin/courses/${moduleId}/${videoId}/quiz`,
+        endPont,
         quiz
       );
 
@@ -378,25 +384,6 @@ const QuizForm = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-
-                <div className="mt-4">
-                  <label
-                    htmlFor={`explanation-${qIndex}`}
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Explanation (optional)
-                  </label>
-                  <textarea
-                    id={`explanation-${qIndex}`}
-                    rows={2}
-                    value={question.explanation}
-                    onChange={(e) =>
-                      handleQuestionChange(qIndex, "explanation", e.target.value)
-                    }
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
-                    placeholder="Add an explanation for the correct answer"
-                  />
                 </div>
               </div>
             ))}

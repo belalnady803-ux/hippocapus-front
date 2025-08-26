@@ -15,7 +15,6 @@ import { API_URL } from "../../store/authStore";
 
 const ModulePage = () => {
   const { courseId, moduleId } = useParams();
-  console.log(courseId, moduleId);
   if(moduleId === "new") return <AddModule courseId={courseId} />;
   const navigate = useNavigate();
 

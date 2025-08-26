@@ -35,7 +35,6 @@ const EditCourse = () => {
         const fetchCourse = async () => {
             try {
         const { data } = await axios.get(`${API_URL}/courses/${id}`);
-        console.log(data);
         setCourseData({
             title: data.title || "",
             description: data.description || "",
@@ -45,7 +44,6 @@ const EditCourse = () => {
             instructors: data.instructors || [],
             reviews: data.reviews || [],
         });
-        console.log(courseData);
         } catch (error) {
             console.error("Failed to fetch course:", error);
             alert("Failed to load course data.");

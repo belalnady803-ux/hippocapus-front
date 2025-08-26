@@ -13,7 +13,8 @@ const VideoRow = ({ video, courseId, moduleId, onDelete }) => {
   // if there is a quiz , i need to navigate to edit page else to create page
   const handleAddQuiz = () => {
     if (video.quiz) {
-      navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/quiz/${video.quiz._id}`);
+      navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/quiz/${video.quiz}`);
+      return;
     }
     navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/quiz`);
   };

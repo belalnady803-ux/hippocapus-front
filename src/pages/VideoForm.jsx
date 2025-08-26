@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import { FiSave, FiX, FiUpload } from "react-icons/fi";
 import { API_URL } from "../store/authStore";
@@ -7,7 +7,6 @@ import { API_URL } from "../store/authStore";
 const VideoForm = () => {
   const { courseId, moduleId, videoId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const isEditMode = !!videoId;
 
   const [formData, setFormData] = useState({
@@ -80,7 +79,7 @@ const VideoForm = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-24">
       <div className="max-w-3xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -118,7 +117,6 @@ const VideoForm = () => {
                 required
               />
             </div>
-
             <div>
               <label
                 htmlFor="url"
