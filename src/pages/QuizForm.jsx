@@ -5,7 +5,7 @@ import { FiSave, FiX, FiPlus, FiTrash2 } from "react-icons/fi";
 import { API_URL } from "../store/authStore";
 
 const QuizForm = () => {
-  const { courseId, moduleId, videoId } = useParams();
+  const { courseId, moduleId, videoId ,quizId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ const QuizForm = () => {
     const fetchQuiz = async () => {
       try {
         const { data } = await axios.get(
-          `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/videos/${videoId}/quiz`
+          `${API_URL}/admin/courses/${moduleId}/${videoId}/quiz/${quizId}`
         );
         if (data) {
           setQuiz(data);

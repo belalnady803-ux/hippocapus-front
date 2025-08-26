@@ -1,4 +1,3 @@
-import React from "react";
 import { FiEdit2, FiFileText, FiTrash2, FiVideo } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -11,8 +10,11 @@ const VideoRow = ({ video, courseId, moduleId, onDelete }) => {
   const handleEditVideo = () => {
     navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/edit`);
   };
-
+  // if there is a quiz , i need to navigate to edit page else to create page
   const handleAddQuiz = () => {
+    if (video.quiz) {
+      navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/quiz/${video.quiz._id}`);
+    }
     navigate(`/admin/courses/${courseId}/modules/${moduleId}/videos/${video._id}/quiz`);
   };
 
