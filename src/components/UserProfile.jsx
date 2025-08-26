@@ -1,5 +1,6 @@
 import  { useState } from "react";
 import { useAuthStore } from "../store/authStore";
+import avatar from "../assets/doc-avatar.jpg";
 
 const UserProfile = ({ setIsHover, session, isHover }) => {
   const { logout } = useAuthStore();
@@ -26,6 +27,7 @@ const UserProfile = ({ setIsHover, session, isHover }) => {
       <div 
         className="w-10 h-10 bg-p1 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-md hover:bg-blue-600 transition-colors cursor-pointer" 
       >
+        <img src={avatar} alt="avatar"  className="rounded-full"/>
       </div>
       {isHover && (
         <div 

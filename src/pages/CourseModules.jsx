@@ -62,16 +62,16 @@ export default function CourseModules() {
       {/* Modules */}
       {modules?.length > 0 ? (
         <div className="space-y-6">
-          {modules.map((mod, modIndex) => (
+          {modules.map((mod) => (
             <div key={mod._id} className="bg-p4 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm overflow-hidden">
               {/* Module Header */}
               <div className="p-6 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-p4">
-                      Module {modIndex + 1}: {mod.title}
+                      {mod.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mt-1">{mod.description}</p>
+                    {/* <p className="text-gray-600 dark:text-gray-400 mt-1">{mod.description}</p> */}
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     {mod.videos?.length || 0} lectures • {mod.videos?.filter(vid => vid.quiz)?.length || 0} quizzes
