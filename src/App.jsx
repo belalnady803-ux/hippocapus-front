@@ -22,7 +22,6 @@ import ModulePage from "./pages/ModulePage/ModulePage.jsx";
 import VideoForm from "./pages/VideoForm.jsx";
 import QuizForm from "./pages/QuizForm.jsx";
 import AddInstructor from "./pages/AddInstructor.jsx";
-import CourseStatus from "./pages/coursStatus/courseStatus.jsx"
 import UserCourseDetails from "./pages/UserCourseDetails.jsx";
 import UserModuleDetails from "./pages/UserModuleDetails.jsx";
 
