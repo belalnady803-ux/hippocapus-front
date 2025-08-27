@@ -70,7 +70,6 @@ const router = createBrowserRouter(createRoutesFromElements(
           <Route index element={<Admin />} />
           <Route path="courses/new" element={<AddCourse />} />
           <Route path="courses/:id/edit" element={<EditCourse />} />
-          <Route path="courses/:courseId/details" element={<CourseStatus />} />"
           <Route path="courses/:courseId/instructors/add" element={<AddInstructor />} />
           <Route path="courses/:courseId/modules/:moduleId" element={<ModulePage />} />
           <Route path="courses/:courseId/modules/:moduleId/videos/new" element={<VideoForm />} />
