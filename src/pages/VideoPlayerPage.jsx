@@ -55,7 +55,7 @@ const QuizModal = ({ quiz, isOpen, onClose, onStartQuiz }) => {
 
 
 export default function VideoPlayerPage() {
-  const { id: courseId, videoId } = useParams();
+  const { id,moduleId, videoId } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const [video, setVideo] = useState(null);
@@ -69,25 +69,11 @@ export default function VideoPlayerPage() {
     async function fetchVideoDetails() {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/courses/${courseId}`);
-        const course = res.data;
-        setCourseTitle(course.title);
-
-        let foundVideo = null;
-        // Find the video within the course's modules
-        for (const module of course.modules) {
-          const v = module.videos.find(v => v._id === videoId);
-          if (v) {
-            foundVideo = v;
-            break;
-          }
-        }
-
-        if (foundVideo) {
-          setVideo(foundVideo);
-          
-          // Fetch quiz data if video has a quiz
-          if (foundVideo.quiz) {
+        const res = await axios.get(`${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`);
+        const video = res.data;
+        console.log(video);
+        setVideo(video);
+        if (video.quiz) {
             try {
               const quizRes = await axios.get(`${API_URL}/quizzes/${foundVideo.quiz}`);
               setQuiz(quizRes.data);
@@ -95,11 +81,9 @@ export default function VideoPlayerPage() {
               console.error("Failed to fetch quiz:", quizErr);
               // Don't set error, just log it - quiz is optional
             }
-          }
-        } else {
-          setError("Video not found in this course.");
         }
-      } catch (err) {
+        }
+      catch (err) {
         console.error("Failed to fetch video details:", err);
         setError("Failed to load video. Please try again later.");
       } finally {
@@ -108,7 +92,7 @@ export default function VideoPlayerPage() {
     }
 
     fetchVideoDetails();
-  }, [courseId, videoId]);
+  }, [videoId]);
 
   if (loading) {
     return (
@@ -123,7 +107,7 @@ export default function VideoPlayerPage() {
       <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 text-center px-4">
         <p className="text-2xl text-red-500 mb-4">{error}</p>
         <button
-          onClick={() => navigate(`/courses/${courseId}`)}
+          onClick={() => navigate(`/courses/${id}`)}
           className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
         >
           Back to Course
@@ -171,7 +155,7 @@ export default function VideoPlayerPage() {
     <main className="bg-gray-50 dark:bg-gray-900 pt-24 min-h-screen flex flex-col items-center justify-center ">
       <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
-            <Link to={`/courses/${courseId}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+            <Link to={`/courses/${id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                 &larr; Back to {courseTitle}
             </Link>
         </div>

@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
+import { Link , useNavigate} from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../store/authStore.js';
+import Button from '../components/Button.jsx';
 
 // Function to fetch courses from your backend API
 const fetchSubscribedCourses = async () => {
@@ -47,7 +48,7 @@ function MyCourses() {
           You haven't enrolled in any courses yet.
         </p>
         <Link
-          to="/courses"
+          to="/courses/"
           className="mt-6 inline-block bg-p1 text-p2 rounded-full py-3 px-6 font-semibold hover:opacity-90 transition-opacity"
         >
           Browse Courses
@@ -66,7 +67,7 @@ function MyCourses() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {courses.map((course) => (
-          <Link to={`/my-courses/${course.id}`} key={course.id}>
+          <Link to={`/my-courses/${course._id}`} key={course._id}>
             <div className="bg-p4 dark:bg-[#21262B] rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300 dark:border-dark-Cs flex flex-col h-full">
               <img
                 src={course.image || ""}
@@ -82,9 +83,8 @@ function MyCourses() {
                   {course.description}
                 </p>
                 <div className="mt-auto">
-                  <button className="w-full bg-p1 text-p2 rounded-full py-2 px-4 cursor-pointer font-semibold hover:opacity-80 transition-opacity">
-                    Continue Learning
-                  </button>
+                  <Button text="Continue Learning">
+                  </Button>
                 </div>
               </div>
             </div>
