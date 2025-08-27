@@ -107,7 +107,7 @@ export default function CourseModules() {
                         <div className="flex items-center gap-2">
                           {vid.isFree ? (
                             <Link 
-                              to={`/courses/${id}/videos/${vid._id}`} 
+                              to={`/courses/${id}/modules/${mod._id}/videos/${vid._id}`} 
                               target="_blank" 
                               rel="noreferrer" 
                               className="text-sm font-semibold text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-1"

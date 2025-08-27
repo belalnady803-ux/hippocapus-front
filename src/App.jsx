@@ -22,7 +22,9 @@ import ModulePage from "./pages/ModulePage/ModulePage.jsx";
 import VideoForm from "./pages/VideoForm.jsx";
 import QuizForm from "./pages/QuizForm.jsx";
 import AddInstructor from "./pages/AddInstructor.jsx";
-// import CourseStatus from "./pages/coursStatus/courseStatus.jsx"
+import CourseStatus from "./pages/coursStatus/courseStatus.jsx"
+import UserCourseDetails from "./pages/UserCourseDetails.jsx";
+import UserModuleDetails from "./pages/UserModuleDetails.jsx";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -83,14 +85,18 @@ const router = createBrowserRouter(createRoutesFromElements(
           <Route path="modules" element={<CourseModules/>} />
           <Route path="reviews" element={<CourseReviews/>} />
         </Route>
-        <Route path="courses/:id/videos/:videoId" element={<VideoPlayerPage />} />
+        <Route path="courses/:id/modules/:moduleId/videos/:videoId" element={<VideoPlayerPage />} />
         <Route path ="faq" element={<FAQ/>} />
         <Route path = "contact" element={<Contact /> }/>
         <Route path="my-courses" element={
           <ProtectedRoute>
             <MyCourses />
           </ProtectedRoute>
-        }/>
+        }> 
+        </Route>
+        <Route path="my-courses/:id" element={<UserCourseDetails />} />
+        <Route path="my-courses/:id/:moduleId" element={<UserModuleDetails />} />
+        <Route path="my-courses/:id/:moduleId/videos/:videoId" element={<VideoPlayerPage />} />
       <Route path="login" element={
         <RedirectAuthenticatedUser>
           <LogIn/>
