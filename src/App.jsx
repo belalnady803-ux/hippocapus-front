@@ -22,6 +22,7 @@ import ModulePage from "./pages/ModulePage/ModulePage.jsx";
 import VideoForm from "./pages/VideoForm.jsx";
 import QuizForm from "./pages/QuizForm.jsx";
 import AddInstructor from "./pages/AddInstructor.jsx";
+import CourseStatus from "./pages/coursStatus/courseStatus.jsx"
 
 
 const ProtectedRoute = ({ children }) => {
@@ -69,6 +70,7 @@ const router = createBrowserRouter(createRoutesFromElements(
           <Route index element={<Admin />} />
           <Route path="courses/new" element={<AddCourse />} />
           <Route path="courses/:id/edit" element={<EditCourse />} />
+          <Route path="courses/:courseId/details" element={<CourseStatus />} />"
           <Route path="courses/:courseId/instructors/add" element={<AddInstructor />} />
           <Route path="courses/:courseId/modules/:moduleId" element={<ModulePage />} />
           <Route path="courses/:courseId/modules/:moduleId/videos/new" element={<VideoForm />} />

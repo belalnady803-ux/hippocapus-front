@@ -160,7 +160,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
                 <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
                 <div className="p-6">
                   <p className="text-3xl font-bold text-gray-900 dark:text-p4 mb-4">
-                    ${course.price}
+                    {course.price} SRA
                   </p>
                   <button className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors mb-4"
                   onClick={() => handleEnrollClick(course.title)}>

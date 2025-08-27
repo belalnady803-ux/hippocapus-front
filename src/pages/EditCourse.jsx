@@ -7,9 +7,14 @@ import { API_URL } from '../store/authStore';
 
 const EditCourse = () => {
   const { id } = useParams(); // courseId
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [addUserMessage, setAddUserMessage] = useState('');
+  const [addUserFailed, setAddUserFailed] = useState('');
+  const [removeUserMessage, setRemoveUserMessage] = useState('');
+  const [removeUserFailed, setRemoveUserFailed] = useState('');
 
-    const [courseData, setCourseData] = useState({
+
+  const [courseData, setCourseData] = useState({
         title: "",
         description: "",
         price: "",
@@ -19,19 +24,19 @@ const EditCourse = () => {
         reviews: [],
     });
 
-    const [editableFields, setEditableFields] = useState({
+  const [editableFields, setEditableFields] = useState({
         title: false,
         description: false,
         price: false,
         image: false,
     });
 
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
     // Determine the API base URL based on the environment
 
     // Fetch course on mount
-    useEffect(() => {
+  useEffect(() => {
         const fetchCourse = async () => {
             try {
         const { data } = await axios.get(`${API_URL}/courses/${id}`);
@@ -50,14 +55,14 @@ const EditCourse = () => {
         }
     };
     fetchCourse();
-    }, [id, API_URL]); // Add apiBaseURL as a dependency
+  }, [id, API_URL]); // Add apiBaseURL as a dependency
 
-    const handleChange = (e) => {
+  const handleChange = (e) => {
         const { name, value } = e.target;
         setCourseData({ ...courseData, [name]: value });
-    };
+  };
 
-    const toggleEdit = (field) => {
+  const toggleEdit = (field) => {
         setEditableFields({ ...editableFields, [field]: !editableFields[field] });
     };
     const handleSubmit = async (e) => {
@@ -77,6 +82,42 @@ const EditCourse = () => {
             alert("Failed to update course.");
         } finally {
       setLoading(false);
+    }
+  };
+  const addUserToCourse = async () => {
+    const email = document.getElementById('add-user').value;
+    try {
+      if (!email) {
+        alert('Please enter a user email.');
+        return;
+      }
+      const response = await axios.post(`${API_URL}/admin/courses/addSubscribedUser`, {
+        email,
+        courseId: id,
+      });
+        setAddUserFailed(response.data.message);
+      document.getElementById('add-user').value = '';
+    } catch (error) {
+      console.error(error);
+      setAddUserFailed('Failed to add user to the course.');
+    }
+  };
+  const removeUserFromCourse = async () => {
+    const email = document.getElementById('remove-user').value;
+    try {
+      if (!email) {
+        alert('Please enter a user email.');
+        return;
+      }
+      const response = await axios.post(`${API_URL}/admin/courses/removeSubscribedUser`, {
+        email,
+        courseId: id,
+      });
+      setRemoveUserMessage(response.data.message);
+      document.getElementById('remove-user').value = '';
+    } catch (error) {
+      console.error(error);
+      setRemoveUserFailed('Failed to remove user from the course.');
     }
   };
 
@@ -331,6 +372,38 @@ const EditCourse = () => {
             )}
           </div>
 
+          {/* add user to this course */}
+          <label htmlFor="add-user" className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+            Add User
+          </label>  
+          <input
+            type="text"
+            id="add-user" 
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+          />
+          <button type="button" onClick={addUserToCourse} className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Add User to this course
+          </button>
+          {addUserMessage && <p className="mt-2 text-green-600 font-medium">{addUserMessage}</p>}
+          {addUserFailed && <p className="mt-2 text-red-600 font-medium">{addUserFailed}</p>}
+          {/* remove user form this course */}
+                    <label htmlFor="remove-user" className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+            remove User
+          </label>  
+          <input
+            type="text"
+            id="remove-user" 
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+          />
+          <button type="button" onClick={removeUserFromCourse} className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            remove User from this course
+          </button>
+          {removeUserMessage && <p className="mt-2 text-green-600 font-medium">{removeUserMessage}</p>}
+          {removeUserFailed && <p className="mt-2 text-red-600 font-medium">{removeUserFailed}</p>}
+
+          <div className="space-y-3"></div>
+
+
           <div className="pt-4">
             <button
               type="submit"
@@ -341,7 +414,7 @@ const EditCourse = () => {
             </button>
           </div>
         </form>
-;    </div>
+    </div>
     </div>
   )
 };
