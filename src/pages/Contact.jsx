@@ -167,7 +167,7 @@ const Contact = () => {
         </div>
 
         {/* Column 2: Contact Info */}
-        <div className="bg-white dark:bg-[#1C1F24] p-8 md:p-10 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
+        {/* <div className="bg-white dark:bg-[#1C1F24] p-8 md:p-10 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold dark:text-p4 mb-6">Contact Information</h2>
           <div className="flex flex-col gap-8 text-gray-600 dark:text-[#94ABC7]">
             <div className="flex items-start gap-4">
@@ -198,7 +198,7 @@ const Contact = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );

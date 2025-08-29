@@ -71,7 +71,6 @@ export default function VideoPlayerPage() {
         setLoading(true);
         const res = await axios.get(`${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`);
         const video = res.data;
-        console.log(video);
         setVideo(video);
         if (video.quiz) {
             try {
