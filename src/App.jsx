@@ -50,11 +50,7 @@ const IsAdminRoute = ({ children }) => {
 	}
 
   if (!isAuthenticated || !user || !user.rules.includes("ADMIN")) {
-    return (
-      <div>
-        Acsses forbiden
-      </div>
-    )
+		return <Navigate to='/' replace />;
 	}
 	return children;
 };
