@@ -1,27 +1,20 @@
 import { createContext, useState, useEffect, useContext } from "react";
 const ThemeContext = createContext(undefined);
 export default function Context({ children }) {
-    const [currentMode, setCurrentMode] = useState("light");
     const [activeBar, setActiveBar] = useState(false);
-
+    const [currentMode, setCurrentMode] = useState(localStorage.getItem('theme'));
     const toggleTheme = () => {
-        const root = document.documentElement;
         const body = document.body;
-        
         if (currentMode === 'dark') {
-            root.classList.remove('light');
-            root.classList.add('dark');
             body.classList.remove('light');
             body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
         } else {
-            root.classList.remove('dark');
-            root.classList.add('light');
             body.classList.remove('dark');
             body.classList.add('light');
+            localStorage.setItem('theme', 'light');
         }
     };
-
-    // Effect for theme toggle
     useEffect(() => {
         toggleTheme();
     }, [currentMode]);
@@ -42,7 +35,6 @@ export default function Context({ children }) {
 }
 
 export { ThemeContext };
-// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
     const context = useContext(ThemeContext);
     if (context === undefined) {

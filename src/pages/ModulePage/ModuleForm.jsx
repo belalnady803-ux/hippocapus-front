@@ -1,4 +1,3 @@
-
 const ModuleForm = ({ formData, isEditing, onChange }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden mb-8">
@@ -23,21 +22,20 @@ const ModuleForm = ({ formData, isEditing, onChange }) => {
             placeholder="Enter module title"
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Description
+            Price <span className="text-red-500">*</span>
           </label>
-          <textarea
-            name="description"
-            rows={4}
-            value={formData.description}
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
             onChange={onChange}
             disabled={!isEditing}
             className={`w-full px-3 py-2 border ${
               isEditing ? "border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600" : "border-transparent bg-transparent"
             } rounded-md shadow-sm dark:text-white`}
-            placeholder="Enter module description"
+            placeholder="Enter module price"
           />
         </div>
       </div>

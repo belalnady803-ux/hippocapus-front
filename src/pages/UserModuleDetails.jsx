@@ -1,21 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, data } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import { API_URL } from "../store/authStore";
 
-
-
-/*
-    [
-    {
-        "title": "Test vide",
-        "url": "0mbmhbw9hm",
-        "isFree": false,
-        "duration": "00:00",
-        "_id": "68af439807fb0e2ff1d4e954"
-    }
-]
-*/ 
 
 const UserModuleDetails = () => {
     const {id , moduleId} = useParams();
@@ -33,9 +20,7 @@ const UserModuleDetails = () => {
         const fetchModule = async () => {
             try {
                 const res = await axios.get(`${API_URL}/user/courses/${id}/modules/${moduleId}`);
-                // If response is array, use first element
                 setVideos(res.data);
-                console.log(res.data);
             } catch (err) {
                 setError("Failed to fetch module details.");
             } finally {
@@ -46,7 +31,7 @@ const UserModuleDetails = () => {
     }, [id, moduleId]);
 
     const handleVideoClick = (videoId) => {
-        navigate(`/my-courses/${id}/${moduleId}/videos/${videoId}`);
+        navigate(`/my-courses/${id}/${moduleId}/videos/${videoId}?preview=false`);
     };
 
     if (loading) return <div className="pt-24 text-center">Loading...</div>;
@@ -61,12 +46,12 @@ const UserModuleDetails = () => {
                     videos.map((video) => (
                         <li
                             key={video._id}
-                            className="bg-gray-100 dark:bg-dark-Bg rounded-lg p-4 flex items-center justify-between cursor-pointer transition"
+                            className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between cursor-pointer transition "
                             onClick={() => handleVideoClick(video._id)}
                         >
                             <span className="font-medium">{video.title}</span>
                             <button
-                                className="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-lg hover:bg-primary-dark transition"
+                                className="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-lg hover:bg-primary-dark transition cursor-pointer"
                                 onClick={e => {
                                     e.stopPropagation();
                                     handleVideoClick(video._id);

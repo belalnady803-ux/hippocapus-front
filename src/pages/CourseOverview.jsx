@@ -27,6 +27,9 @@ export default function CourseOverview() {
   if (error) return <p className="text-center mt-20 text-red-500">{error}</p>;
   if (!course) return <p className="text-center mt-20 dark:text-p4">Course not found.</p>;
 
+    const subjectsLength = course.modules.filter(mod => mod.isPublished).length
+
+
   return (
     <div className="space-y-8">
       {/* Course Header */}
@@ -109,7 +112,7 @@ export default function CourseOverview() {
         </div>
         <div className="bg-p4 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 text-center">
           <div className="text-3xl font-bold text-blue-600 dark:text-blue-500 mb-2">
-            {course.modules?.length || 0}
+            {subjectsLength || 0}
           </div>
           <div className="text-gray-600 dark:text-gray-400">subjects</div>
         </div>

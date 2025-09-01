@@ -1,4 +1,4 @@
-import { Link , useNavigate} from 'react-router';
+import { Link} from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../store/authStore.js';
 import Button from '../components/Button.jsx';
@@ -16,7 +16,7 @@ const fetchSubscribedCourses = async () => {
     throw new Error("Failed to fetch courses");
   }
   const data = await response.json();
-  return data.enrolledCourses || [];
+  return data.uniqueCourses || [];
 };
 
 function MyCourses() {
@@ -31,7 +31,6 @@ function MyCourses() {
       </div>
     );
   }
-
   if (error) {
     return (
       <div className="container pt-28 text-center min-h-screen">
@@ -39,7 +38,6 @@ function MyCourses() {
       </div>
     );
   }
-
   if (!courses || courses.length === 0) {
     return (
       <section className="container pt-28 text-center min-h-screen">

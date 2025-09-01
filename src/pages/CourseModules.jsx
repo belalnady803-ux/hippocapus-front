@@ -13,7 +13,7 @@ export default function CourseModules() {
     async function fetchCourse() {
       try {
         const res = await axios.get(`${API_URL}/courses/${id}/modules`);
-        setModules(res.data);
+        setModules(res.data.filter(mod => mod.isPublished));
       } catch (err) {
         console.error("Failed to fetch course:", err);
         setError("Failed to load course details. Please try again later.");
@@ -73,8 +73,8 @@ export default function CourseModules() {
                     </h3>
                     {/* <p className="text-gray-600 dark:text-gray-400 mt-1">{mod.description}</p> */}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {mod.videos?.length || 0} lectures • {mod.videos?.filter(vid => vid.quiz)?.length || 0} quizzes
+                  <div className="text-xl text-primary ">
+                    {/* {mod.price ? `${mod.price} SRA` : ''}  */}
                   </div>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function CourseModules() {
                         <div className="flex items-center gap-2">
                           {vid.isFree ? (
                             <Link 
-                              to={`/courses/${id}/modules/${mod._id}/videos/${vid._id}`} 
+                              to={`/courses/${id}/modules/${mod._id}/videos/${vid._id}?preview=true`} 
                               target="_blank" 
                               rel="noreferrer" 
                               className="text-sm font-semibold text-blue-600 dark:text-blue-500 hover:underline flex items-center gap-1"

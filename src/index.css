@@ -44,21 +44,18 @@
         padding-right: 16px;
     }
 }
-
-@custom-variant dark (&:where(.dark, .dark *));
-
 body{
     font-family: "Lexend", sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-/* Ensure body responds to dark mode */
-body.dark {
-    background-color: #1e1e1e; /* Matches header and footer dark background */
-    color: #f9fafb; /* dark:text-gray-100 */
-}
-
-body.light {
+body.light{
     background-color: #ffffff;
     color: #111827;
 }
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1e1e1e; 
+        color: #f9fafb;
+    }
+}
+@custom-variant dark (&:where(.dark, .dark *));

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router";
+import {useEffect, useState } from "react";
+import { useParams, Link, useNavigate  } from "react-router";
 import axios from "axios";
 import { API_URL, useAuthStore } from "../store/authStore.js";
 import Spinner from "../components/spinner"
@@ -52,8 +52,6 @@ const QuizModal = ({ quiz, isOpen, onClose, onStartQuiz }) => {
   );
 };
 
-
-
 export default function VideoPlayerPage() {
   const { id,moduleId, videoId } = useParams();
   const navigate = useNavigate();
@@ -65,11 +63,14 @@ export default function VideoPlayerPage() {
   const [quiz, setQuiz] = useState(null);
   const [showQuizModal, setShowQuizModal] = useState(false);
 
+
+  const endPoint = `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
+
   useEffect(() => {
     async function fetchVideoDetails() {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`);
+        const res = await axios.get(endPoint);
         const video = res.data;
         setVideo(video);
         if (video.quiz) {

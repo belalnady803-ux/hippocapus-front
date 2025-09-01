@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -12,7 +12,8 @@ const AddModule = ({ courseId: propCourseId }) => {
 
   const [formData, setFormData] = useState({
     title: '',
-    description: ''
+    price : "",
+    isPublished: false,
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -33,9 +34,9 @@ const AddModule = ({ courseId: propCourseId }) => {
     try {
       const moduleData = {
         title: formData.title,
-        description: formData.description
-      };
-
+        price: formData.price,
+        isPublished: formData.isPublished,
+      }
       const response = await axios.post(
         `${API_URL}/admin/courses/${courseId}/modules`,
         moduleData,

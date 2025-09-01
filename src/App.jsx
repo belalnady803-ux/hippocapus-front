@@ -24,6 +24,7 @@ import QuizForm from "./pages/QuizForm.jsx";
 import AddInstructor from "./pages/AddInstructor.jsx";
 import UserCourseDetails from "./pages/UserCourseDetails.jsx";
 import UserModuleDetails from "./pages/UserModuleDetails.jsx";
+import { Toaster } from "react-hot-toast";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -122,6 +123,9 @@ export default function App() {
 		checkAuth();
 	}, [checkAuth]);
   return (
+    <>
+      <Toaster />
       <RouterProvider router={router} />
+    </>
   );
 }
