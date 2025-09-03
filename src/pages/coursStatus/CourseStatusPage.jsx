@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_URL } from '../../store/authStore';
+import { API_URL } from '../../store/authStore.js';
 import { useParams } from 'react-router';
-import ModuleStatusPage from './moduleStatus';
+import ModuleStatusPage from './ModuleStatusPage.jsx';
 
 const CourseStatus = () => {
     const [users, setUsers] = useState([]);
