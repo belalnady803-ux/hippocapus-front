@@ -25,7 +25,7 @@ import AddInstructor from "./pages/AddInstructor.jsx";
 import UserCourseDetails from "./pages/UserCourseDetails.jsx";
 import UserModuleDetails from "./pages/UserModuleDetails.jsx";
 import { Toaster } from "react-hot-toast";
-import CourseStatus from "./pages/coursStatus/CourseStatus.jsx"
+import CourseStatus from "./pages/coursStatus/CourseStatusPage.jsx"
 
 
 const ProtectedRoute = ({ children }) => {
