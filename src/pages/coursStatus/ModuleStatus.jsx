@@ -2,7 +2,7 @@ import { API_URL } from "../../store/authStore"
 import axios from "axios"
 import { useState , useEffect } from "react"
 
-const ModuleStatus = ({moduleId , moduleTitle}) => {
+const ModuleStatusPage = ({moduleId , moduleTitle}) => {
     const [users, setUsers] = useState([])
     useEffect(() => {
         async function getFullySubscribedUserInModule(moduleId) {
@@ -62,4 +62,4 @@ return (
   )
 }
 
-export default ModuleStatus
+export default ModuleStatusPage

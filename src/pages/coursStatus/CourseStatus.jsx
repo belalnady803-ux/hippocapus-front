@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../store/authStore';
 import { useParams } from 'react-router';
-import ModuleStatus from './moduleStatus';
+import ModuleStatusPage from './moduleStatus';
 
 const CourseStatus = () => {
     const [users, setUsers] = useState([]);
@@ -83,7 +83,7 @@ const CourseStatus = () => {
         </div>
         {/* here we will a create a simirlar table for evry module in the course */}
             {modules.map((module) => (
-                <ModuleStatus key= {module._id} moduleId = {module._id} moduleTitle = {module.title} />
+                <ModuleStatusPage key= {module._id} moduleId = {module._id} moduleTitle = {module.title} />
             ))}
         </div>
     );
