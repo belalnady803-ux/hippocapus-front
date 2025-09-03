@@ -1,47 +1,24 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { API_URL } from '../../store/authStore';
-import { useParams } from 'react-router';
-import ModuleStatus from './moduleStatus';
+import { API_URL } from "../../store/authStore"
+import axios from "axios"
+import { useState , useEffect } from "react"
 
-const CourseStatus = () => {
-    const [users, setUsers] = useState([]);
-    const [modules, setModules] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const { id } = useParams();
-
+const ModuleStatus = ({moduleId , moduleTitle}) => {
+    const [users, setUsers] = useState([])
     useEffect(() => {
-        const fetchSubscribedUsers = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get(`${API_URL}/admin/courses/${id}/getFullySubscribedUser`);
-                setUsers(response.data.users);
-                setModules(response.data.modules);
-                setError(null);
-            } catch (err) {
-                setError('Failed to fetch subscribed users.');
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (id) {
-            fetchSubscribedUsers();
-        }
-    }, [id]);
-
-    if (loading) {
-        return <div>Loading...</div>;
+        async function getFullySubscribedUserInModule(moduleId) {
+        try{
+            const response = await axios.get(`${API_URL}/admin/courses/getSubscribedUser/${moduleId}` , {
+            })
+            setUsers(response.data.users)
+        }catch(err){
+            console.log(err)
+        }  
     }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-    return (
-        <div className="container mx-auto px-4 py-24 grid grid-cols-1 gap-8 lg:gap-12">
-            {/* this table for user subscribed to the hole course  */}
-            <h2 className='font-bold text-2xl text-center mb-4 dark:text-white'>Subscribed Users</h2>
+    getFullySubscribedUserInModule(moduleId)
+    , [moduleId]})
+return (
+    <>
+        <h2 className='font-bold text-2xl text-center mb-4 dark:text-white'>Subscribed Users to {moduleTitle}</h2>
         <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -81,12 +58,8 @@ const CourseStatus = () => {
           </table>
         </div>
         </div>
-        {/* here we will a create a simirlar table for evry module in the course */}
-            {modules.map((module) => (
-                <ModuleStatus key= {module._id} moduleId = {module._id} moduleTitle = {module.title} />
-            ))}
-        </div>
-    );
-};
+    </>
+  )
+}
 
-export default CourseStatus;
+export default ModuleStatus

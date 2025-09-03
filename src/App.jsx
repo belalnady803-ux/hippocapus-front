@@ -25,6 +25,7 @@ import AddInstructor from "./pages/AddInstructor.jsx";
 import UserCourseDetails from "./pages/UserCourseDetails.jsx";
 import UserModuleDetails from "./pages/UserModuleDetails.jsx";
 import { Toaster } from "react-hot-toast";
+import CourseStatus from "./pages/coursStatus/CourseStatus.jsx"
 
 
 const ProtectedRoute = ({ children }) => {
@@ -71,6 +72,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path="admin" element={<IsAdminRoute><Outlet /></IsAdminRoute>}>
           <Route index element={<Admin />} />
           <Route path="courses/new" element={<AddCourse />} />
+          <Route path="courses/:id/details" element ={<CourseStatus/>} />
           <Route path="courses/:id/edit" element={<EditCourse />} />
           <Route path="courses/:courseId/instructors/add" element={<AddInstructor />} />
           <Route path="courses/:courseId/modules/:moduleId" element={<ModulePage />} />
