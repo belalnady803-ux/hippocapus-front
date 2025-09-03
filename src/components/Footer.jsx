@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaTelegram } from "react-icons/fa";
 
 const Footer = () => {
     return (
@@ -23,9 +23,8 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold dark:text-p4 mb-2">Follow Us</h4>
                         <div className="flex gap-4 text-p2 dark:text-p4">
-                            <a href="#" className="hover:opacity-75"><FaFacebook size={24} /></a>
-                            <a href="#" className="hover:opacity-75"><FaTwitter size={24} /></a>
-                            <a href="#" className="hover:opacity-75"><FaLinkedin size={24} /></a>
+                            <a href="https://www.instagram.com/hippocampus.eu?igsh=aHpjMzJwb253YTBt&utm_source=qr"><FaInstagram size={24} /></a>
+                            <a href="https://t.me/hippocampus_eu"><FaTelegram size={24} /></a>
                         </div>
                     </div>
                 </div>
