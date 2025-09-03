@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FaInstagram, FaTelegram } from "react-icons/fa";
+import { FaInstagram, FaTelegram , FaWhatsapp} from "react-icons/fa";
 
 const Footer = () => {
     return (
@@ -25,6 +25,7 @@ const Footer = () => {
                         <div className="flex gap-4 text-p2 dark:text-p4">
                             <a href="https://www.instagram.com/hippocampus.eu?igsh=aHpjMzJwb253YTBt&utm_source=qr"><FaInstagram size={24} /></a>
                             <a href="https://t.me/hippocampus_eu"><FaTelegram size={24} /></a>
+                            <a href="https://chat.whatsapp.com/I1wEEY9rjWl1gReLi0HUtp?mode=ems_wa_c"><FaWhatsapp size={24} /></a>
                         </div>
                     </div>
                 </div>
