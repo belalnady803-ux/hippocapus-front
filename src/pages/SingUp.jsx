@@ -38,22 +38,7 @@ const SignUp = () => {
   const navigation = useNavigation();
   const actionData = useActionData(); // Use a more descriptive name
 
-  // Check if the action returned an error message (a string)
   const error = typeof actionData === 'string' ? actionData : null;
-  // Check if the action returned the verification message (an object)
-//   const isAwaitingVerification = actionData?.awaitingVerification;
-
-  // If awaiting verification, show the message instead of the form
-//   if (isAwaitingVerification) {
-//     return (
-//       <section className="container text-center min-h-screen pt-48">
-//         <h1 className="text-3xl font-bold mb-4 dark:text-p4">Check Your Email</h1>
-//         <p className="text-lg text-p3 dark:text-[#94ABC7]">
-//           We've sent a verification link to your email address. Please click the link to complete your registration.
-//         </p>
-//       </section>
-//     );
-//   }
 
   return (
     <section className="container grid grid-cols-1 md:grid-cols-2 gap-8 items-center min-h-screen pt-28">
