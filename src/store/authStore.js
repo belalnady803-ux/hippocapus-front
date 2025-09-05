@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-export const API_URL = "https://hippocampus-y2yw.onrender.com/api";
+export const API_URL = "https://api.hippocampus-academy.com/api";
 // export const API_URL = "http://localhost:8000/api";
 axios.defaults.withCredentials = true;
 
