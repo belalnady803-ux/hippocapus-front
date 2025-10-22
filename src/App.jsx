@@ -26,6 +26,7 @@ import UserCourseDetails from "./pages/UserCourseDetails.jsx";
 import UserModuleDetails from "./pages/UserModuleDetails.jsx";
 import { Toaster } from "react-hot-toast";
 import CourseStatus from "./pages/coursStatus/CourseStatusPage.jsx"
+import NotFound from "./pages/NotFound.jsx"
 
 
 const ProtectedRoute = ({ children }) => {
@@ -67,6 +68,7 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 const router = createBrowserRouter(createRoutesFromElements(
+     <>
       <Route path="/" element={<Layout/>}>
         <Route index element={<Home/>} />
         <Route path="admin" element={<IsAdminRoute><Outlet /></IsAdminRoute>}>
@@ -116,6 +118,9 @@ const router = createBrowserRouter(createRoutesFromElements(
         </RedirectAuthenticatedUser>
       }/> 
       </Route>
+      <Route path="*" element={<NotFound />} />
+      </>   
+
 ))
 
 
