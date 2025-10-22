@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://hippocampus-academy/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /my-courses/
+Disallow: /login
+Disallow: /signup
+Disallow: /verify-email
+
+# Allow public pages
+Allow: /
+Allow: /courses
+Allow: /faq
+Allow: /contact
+Allow: /courses/*
+
+# Crawl delay (optional - helps prevent overloading your server)
+Crawl-delay: 1
