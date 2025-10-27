@@ -16,12 +16,16 @@ const Login = () => {
     const navigate = useNavigate();
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState ("")
+    const [localError, setLocalError] = useState("")
     const handleLoginIn = async (e) => {
         e.preventDefault();
         try {
             await login(email, password);
             navigate("/");
         } catch (err) {
+            // Prefer backend message (axios error shape) over generic status text
+            const backendMessage = err?.response?.data?.message || err?.message || "Login failed";
+            setLocalError(typeof backendMessage === "string" ? backendMessage : JSON.stringify(backendMessage));
             console.error("Login failed:", err);
         }
     };
@@ -51,10 +55,11 @@ const Login = () => {
                     name="email"
                     id="email-input"
                     required
-                    className={clsx("w-full px-4 py-2 border border-[#DBE0E5] dark:border-dark-Cs rounded-lg bg-p4 dark:bg-[#21262B] focus:outline-none focus:ring-2 focus:ring-p1 dark:focus:ring-s2 dark:text-p4",error && "border-red-500")}
+                    className={clsx("w-full px-4 py-2 border border-[#DBE0E5] dark:border-dark-Cs rounded-lg bg-p4 dark:bg-[#21262B] focus:outline-none focus:ring-2 focus:ring-p1 dark:focus:ring-s2 dark:text-p4",(localError || error) && "border-red-500")}
                     placeholder="email@example.com"
                     onChange={(e)=> {
                         setEmail(e.currentTarget.value)
+                        setLocalError("")
                     }}
                 />
                 </div>
@@ -69,10 +74,11 @@ const Login = () => {
                     type="password"
                     name="password"
                     id="pass-input"
-                    className={clsx("w-full px-4 py-2 border border-[#DBE0E5] dark:border-dark-Cs rounded-lg bg-p4 dark:bg-[#21262B] focus:outline-none focus:ring-2 focus:ring-p1 dark:focus:ring-s2 dark:text-p4",error && "border-red-500")}
+                    className={clsx("w-full px-4 py-2 border border-[#DBE0E5] dark:border-dark-Cs rounded-lg bg-p4 dark:bg-[#21262B] focus:outline-none focus:ring-2 focus:ring-p1 dark:focus:ring-s2 dark:text-p4",(localError || error) && "border-red-500")}
                     placeholder="Enter your password"
                     onChange={(e)=> {
                         setPassword(e.currentTarget.value)
+                        setLocalError("")
                     }}
                 />
                 </div>
@@ -82,9 +88,9 @@ const Login = () => {
                     text = {isLoading ? "Submitting..." :"log in"} >
                 </Button>
             </form>
-            {error && <div className="flex gap-4 items-center pl-4">
+            {(localError || error) && <div className="flex gap-4 items-center pl-4">
                     <FaCircleExclamation  className="text-red-500"/>
-                    <p className="text-red-500">{error}</p>
+                    <p className="text-red-500">{localError || error}</p>
                 </div>}
             <div className="text-center mt-6 text-sm">
                 <p className="text-p3 dark:text-[#94ABC7]">

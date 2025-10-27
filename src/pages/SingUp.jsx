@@ -1,7 +1,8 @@
 import { Form, redirect, useActionData, useNavigation, Link } from "react-router";
 import { FaCircleExclamation } from "react-icons/fa6";
 import registerPhoto from "../assets/register photo.jpg";
-import { useAuthStore } from "../store/authStore.js";  // ⬅ import both
+import { useAuthStore } from "../store/authStore.js";
+  // ⬅ import both
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
@@ -9,7 +10,6 @@ export async function action({ request }) {
   const fullName = formData.get("name");
   const phoneNumber = formData.get("phone");
   const { signup } = useAuthStore.getState(); // ✅ grab directly
-
   if (
     typeof email !== "string" ||
     typeof password !== "string" ||
@@ -19,18 +19,36 @@ export async function action({ request }) {
     return "Invalid form data. Please fill out all fields correctly.";
   }
 
-
   try {
+    // `signup` (in the zustand store) returns `response.data` from axios.
+    // That object typically contains { user, message } (no `success` flag),
+    // so check for a `user` to determine success.
     const response = await signup(email, password, fullName, phoneNumber);
-    if (!response || !response.success) {
-      throw new Error(response?.message || "Signup failed. Please try again.");
+
+    if (response && response.user) {
+      return redirect("/verify-email");
     }
-    return redirect("/verify-email");
+
+    // If backend returned a message but no user, surface it to the form.
+    if (response && typeof response.message === "string") {
+      return response.message;
+    }
+
+    return "Signup failed. Please try again.";
   } catch (err) {
-    if (err instanceof Error) {
-      return err.message;
+    // axios throws an error object where the server message often lives at
+    // `err.response.data.message`. `err.message` is often "Request failed with status code 400",
+    // which is what the UI was showing. Prefer the backend message when available.
+    const backendMessage = err?.response?.data?.message || err?.response?.data || null;
+    if (backendMessage && typeof backendMessage === "string") return backendMessage;
+
+    if (err instanceof Error) return err.message;
+
+    try {
+      return JSON.stringify(err);
+    } catch {
+      return "An unexpected error occurred.";
     }
-    return "An unexpected error occurred.";
   }
 }
 

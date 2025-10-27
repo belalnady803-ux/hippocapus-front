@@ -21,7 +21,6 @@ return (
     <header className="h-[65px] bg-p4 dark:bg-[#1e1e1e]  flex justify-between items-center py-[12px] px-[40px]
         border-b-1 border-p1 dark:border-p4 fixed min-md:top-0 left-0 z-50 w-full transition-all duration-500 max-sm:px-[10px]">
         <div className='min-sm:hidden cursor-pointer z-10' onClick={()=>{setActiveBar(prev => !prev)
-            console.log("changed")
         }}>
             {activeBar ? <IoMdClose  className='dark:text-p1'/>  : <HiMiniBars2 className='dark:text-p1' />} 
         </div>
@@ -60,7 +59,6 @@ return (
                                 return "light"
                             }
                         })
-                        console.log(currentMode)
                     }}>
                     {currentMode === "dark" ? <MdOutlineDarkMode /> : <CiLight />}
                 </button>
