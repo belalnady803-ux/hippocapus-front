@@ -52,10 +52,9 @@ body.light{
     background-color: #ffffff;
     color: #111827;
 }
-@media (prefers-color-scheme: dark) {
-    body {
+body.dark{ 
         background-color: #1e1e1e; 
         color: #f9fafb;
-    }
 }
+
 @custom-variant dark (&:where(.dark, .dark *));
