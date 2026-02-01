@@ -62,6 +62,10 @@ const VerifyEmailPage = () => {
         </h1>
         <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
           Enter the 6-digit code sent to your email.
+          <br />
+          <span className="text-sm text-gray-400">
+            If you didn't receive the email, please check your spam folder.
+          </span>
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
