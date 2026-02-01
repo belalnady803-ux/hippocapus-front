@@ -59,7 +59,7 @@ const QuizIntroModal = ({ quiz, isOpen, onClose, onStartQuiz }) => {
 export default function VideoPlayerPage() {
   const { id, moduleId, videoId } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isCheckingAuth } = useAuthStore();
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -75,8 +75,22 @@ export default function VideoPlayerPage() {
     : `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
 
   useEffect(() => {
+    // Wait for auth check to complete
+    if (isCheckingAuth) return;
+
     // If it's a preview and user is not logged in, skip fetch to show the "Sign in" message immediately
+    // BUT only if we are using the user endpoint (which shouldn't happen if isPreview is true per line 73).
+    // Actually, if isPreview is true, we USE the public endpoint.
+    // So we should ALWAYS fetch if isPreview is true, regardless of auth status?
+    // User requirement: "when i reach it from the free priwer the video is not threre"
+    // And "video is not found" (which means fetch happened but returned nothing OR fetch didn't happen and video is null).
+
+    // If we want to show "Sign in required" for previews when NOT logged in:
     if (!isAuthenticated && isPreview) {
+      // Wait, if we use public endpoint, maybe we SHOULD fetch it? 
+      // If the video is truly "free", the public endpoint should return it.
+      // If it requires login, we show the message.
+      // Let's stick to the previous logic: if preview and not logged in, show sign in message.
       setLoading(false);
       return;
     }
@@ -125,7 +139,7 @@ export default function VideoPlayerPage() {
     }
 
     fetchVideoDetails();
-  }, [videoId, endPoint]);
+  }, [videoId, endPoint, isAuthenticated, isCheckingAuth]);
 
   if (loading) {
     return (
