@@ -70,7 +70,9 @@ export default function VideoPlayerPage() {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
-  const endPoint = `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
+  const endPoint = isPreview
+    ? `${API_URL}/courses/${id}/modules/${moduleId}/video/${videoId}`
+    : `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
 
   useEffect(() => {
     // If it's a preview and user is not logged in, skip fetch to show the "Sign in" message immediately
