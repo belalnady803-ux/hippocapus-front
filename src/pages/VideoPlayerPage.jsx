@@ -83,14 +83,34 @@ export default function VideoPlayerPage() {
       try {
         setLoading(true);
         const res = await axios.get(endPoint);
-        const videoData = res.data.data;
-        setVideo(videoData);
-        if (videoData.quiz) {
-          try {
-            const quizRes = await axios.get(`${API_URL}/quizzes/${videoData.quiz}`);
-            setQuiz(quizRes.data.data);
-          } catch (quizErr) {
-            console.error("Failed to fetch quiz:", quizErr);
+        console.log("Video API Response:", res.data); // Debugging
+        // Handle potential variations in API response structure
+        const videoData = res.data.data || res.data.video || res.data.result;
+
+        if (videoData) {
+          setVideo(videoData);
+          if (videoData.quiz) {
+            try {
+              const quizRes = await axios.get(`${API_URL}/quizzes/${videoData.quiz}`);
+              setQuiz(quizRes.data.data);
+            } catch (quizErr) {
+              console.error("Failed to fetch quiz:", quizErr);
+            }
+          }
+        } else {
+          console.warn("Video data missing in response", res.data);
+          // Optionally check if res.data itself is the video if it has an _id (fallback)
+          if (res.data && res.data._id) {
+            setVideo(res.data);
+            // Also check quiz for fallback
+            if (res.data.quiz) {
+              try {
+                const quizRes = await axios.get(`${API_URL}/quizzes/${res.data.quiz}`);
+                setQuiz(quizRes.data.data);
+              } catch (quizErr) {
+                console.error("Failed to fetch quiz:", quizErr);
+              }
+            }
           }
         }
       }
