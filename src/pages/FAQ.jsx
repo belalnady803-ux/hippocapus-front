@@ -1,4 +1,4 @@
-import { faqData } from "../assets/data"
+import { faqData } from "../assets/data.jsx"
 import { useState } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "axios";
-import { FiSave, FiX, FiUpload } from "react-icons/fi";
+import { FiSave, FiX, FiUpload, FiFile, FiTrash2 } from "react-icons/fi";
 import { API_URL } from "../store/authStore";
+import { toast } from "react-hot-toast";
 
 const VideoForm = () => {
   const { courseId, moduleId, videoId } = useParams();
@@ -19,6 +20,8 @@ const VideoForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [attachedFiles, setAttachedFiles] = useState([]);
+  const [uploadingFile, setUploadingFile] = useState(false);
 
   // If in edit mode, fetch the video data
   useEffect(() => {
@@ -28,13 +31,14 @@ const VideoForm = () => {
           `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
         );
         setFormData({
-          title: data.title,
-          url: data.url,
-          duration: data.duration || "00:00",
-          isFree: data.isFree || false,
-          description: data.description || "",
+          title: data.data.title,
+          url: data.data.url,
+          duration: data.data.duration || "00:00",
+          isFree: data.data.isFree || false,
+          description: data.data.description || "",
         });
         if (data.url) setPreviewUrl(data.url);
+        if (data.data.files) setAttachedFiles(data.data.files);
       } catch (err) {
         console.error("Error fetching video:", err);
         setError("Failed to load video data");
@@ -52,6 +56,73 @@ const VideoForm = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    if (!file) return;
+
+    setUploadingFile(true);
+    try {
+      // 1. Get Presigned URL
+      const presignedRes = await axios.get(
+        `${API_URL}/upload/presigned-url?fileName=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(file.type)}`
+      );
+
+      console.log("Presigned Response:", presignedRes.data);
+      const { url, key } = presignedRes.data.data;
+
+      // Build the URL using your new custom domain
+      const CUSTOM_DOMAIN = "https://files.hippocampus-academy.com";
+      const fileUrlToSave = `${CUSTOM_DOMAIN}/${encodeURIComponent(key || file.name)}`;
+
+      console.log("Saving professional URL to DB:", fileUrlToSave);
+
+      // 2. Upload to R2 (Stay the same - use the 'url' from backend)
+      await axios.put(url, file, {
+        withCredentials: false, // Good job keeping this!
+        headers: { "Content-Type": file.type },
+      });
+      const saveUrl = `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}/file`;
+      // 3. Save to Backend (Now saves the professional link)
+      await axios.post(saveUrl, {
+        name: file.name,
+        url: fileUrlToSave,
+        type: file.type
+      });
+      toast.success("File uploaded successfully");
+
+      // Refresh video data to get updated file list
+      const { data } = await axios.get(
+        `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`
+      );
+      if (data.data.files) setAttachedFiles(data.data.files);
+
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      toast.error("Failed to upload file");
+    } finally {
+      setUploadingFile(false);
+      e.target.value = null;
+    }
+  };
+
+  const handleDeleteFile = async (fileId) => {
+    if (!window.confirm("Are you sure you want to delete this file?")) return;
+
+    try {
+      await axios.delete(
+        `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}/file/${fileId}`
+      );
+      toast.success("File deleted successfully");
+
+      // Update local state by removing the deleted file
+      setAttachedFiles((prev) => prev.filter((f) => f._id !== fileId));
+    } catch (err) {
+      console.error("Error deleting file:", err);
+      toast.error("Failed to delete file");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -227,7 +298,72 @@ const VideoForm = () => {
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
+            {/* Attachments Section - Only in Edit Mode */}
+            {isEditMode && (
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Attachments
+                </h3>
+
+                {/* Upload Button */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Add File
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600">
+                      <FiUpload className="mr-2 h-4 w-4" />
+                      {uploadingFile ? "Uploading..." : "Select File"}
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                        disabled={uploadingFile}
+                      />
+                    </label>
+                    {uploadingFile && <span className="text-sm text-gray-500">Uploading...</span>}
+                  </div>
+                </div>
+
+                {/* File List */}
+                <div className="space-y-2">
+                  {attachedFiles.length === 0 ? (
+                    <p className="text-sm text-gray-500 italic">No files attached yet.</p>
+                  ) : (
+                    attachedFiles.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center overflow-hidden">
+                          <FiFile className="flex-shrink-0 h-5 w-5 text-gray-400 mr-3" />
+                          <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                            {file.title || file.name || `File ${index + 1}`}
+                          </span>
+                        </div>
+                        <div className="flex-shrink-0 ml-4 flex items-center space-x-4">
+                          <a
+                            href={file.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-500 text-sm font-medium"
+                          >
+                            Download
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteFile(file._id)}
+                            className="text-red-600 hover:text-red-800 transition-colors p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
+                            title="Delete file"
+                          >
+                            <FiTrash2 className="h-5 w-5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
                 type="button"
                 onClick={() => navigate(-1)}

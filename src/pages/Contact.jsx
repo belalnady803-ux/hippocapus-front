@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { MdOutlineEmail, MdOutlinePhone, MdOutlineLocationOn } from "react-icons/md";
 import Button from "../components/Button";
 import { API_URL } from '../store/authStore';
+import SEO from "../components/SEO";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -69,6 +69,10 @@ const Contact = () => {
 
   return (
     <main className="container mx-auto py-20 px-4 lg:px-12">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with the Hippocampus team. We are here to help."
+      />
       {/* Header */}
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-extrabold dark:text-p4 mb-4">Get in Touch</h1>
@@ -159,8 +163,8 @@ const Contact = () => {
             )}
 
             <div>
-              <Button type="submit" disabled={isSubmitting} className="w-full text-lg py-3 rounded-xl"  
-              text ={isSubmitting ? "Sending..." : "Send Message"}>
+              <Button type="submit" disabled={isSubmitting} className="w-full text-lg py-3 rounded-xl"
+                text={isSubmitting ? "Sending..." : "Send Message"}>
               </Button>
             </div>
           </form>

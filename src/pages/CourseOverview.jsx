@@ -12,7 +12,7 @@ export default function CourseOverview() {
     async function fetchCourse() {
       try {
         const res = await axios.get(`${API_URL}/courses/${id}`);
-        setCourse(res.data);
+        setCourse(res.data.data);
       } catch (err) {
         console.error("Failed to fetch course:", err);
         setError("Failed to load course details. Please try again later.");

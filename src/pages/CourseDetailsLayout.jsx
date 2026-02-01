@@ -1,14 +1,15 @@
-import { Link, useParams, Outlet, useLocation , useNavigate} from "react-router";
+import { Link, useParams, Outlet, useLocation, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useWhatsApp from '../Hooks/useWhatsApp';
-import { useAuthStore , API_URL} from "../store/authStore.js";
+import { useAuthStore, API_URL } from "../store/authStore.js";
 import axios from "axios";
+import SEO from "../components/SEO";
 
 const CourseDetailsLayout = () => { // Changed to a React component
   const number = "966566292547";
   const navigate = useNavigate();
-  const {openWhatsApp} = useWhatsApp(number);
-  const {isAuthenticated} = useAuthStore();
+  const { openWhatsApp } = useWhatsApp(number);
+  const { isAuthenticated } = useAuthStore();
   const goToWhatsApp = (courseTitle) => {
     const message = `Hello, I want to enroll in the ${courseTitle} course. Could you please provide more details?`;
     openWhatsApp(message);
@@ -26,16 +27,16 @@ const CourseDetailsLayout = () => { // Changed to a React component
   const { id } = useParams();
   const location = useLocation();
 
-    async function fetchCourse() {
-      try {
-        const res = await axios.get(`${API_URL}/courses/${id}`);
-        return res.data;
-      } catch (err) {
-        console.error("Failed to fetch course:", err);
-        setError("Failed to load course details. Please try again later.");
-      }
+  async function fetchCourse() {
+    try {
+      const res = await axios.get(`${API_URL}/courses/${id}`);
+      return res.data.data;
+    } catch (err) {
+      console.error("Failed to fetch course:", err);
+      setError("Failed to load course details. Please try again later.");
     }
-    const {
+  }
+  const {
     data: course,
     isLoading: loading,
     isError: error,
@@ -72,7 +73,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
 
   const averageRating = calculateAverageRating();
   const totalReviews = course.reviews?.length || 0;
-  const subjectsLength = course.modules.filter(mod => mod.isPublished).length
+  const subjectsLength = course.modules?.filter(mod => mod.isPublished).length || 0;
 
   // Determine active tab based on current location
   const getActiveTab = () => {
@@ -85,6 +86,13 @@ const CourseDetailsLayout = () => { // Changed to a React component
 
   return (
     <main className="bg-gray-50 dark:bg-[#1e1e1e] pt-36">
+      <SEO
+        title={course.title}
+        description={course.description}
+        image={course.image}
+        url={window.location.href}
+        type="article"
+      />
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Course Content */}
@@ -119,31 +127,28 @@ const CourseDetailsLayout = () => { // Changed to a React component
               <nav className="flex space-x-8">
                 <Link
                   to={`/courses/${id}`}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'overview'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'overview'
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
                 >
                   Overview
                 </Link>
                 <Link
                   to={`/courses/${id}/modules`}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'modules'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'modules'
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
                 >
                   subjects
                 </Link>
                 <Link
                   to={`/courses/${id}/reviews`}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'reviews'
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'reviews'
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
                 >
                   Reviews ({totalReviews})
                 </Link>
@@ -164,7 +169,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
                     {course.price} SRA
                   </p>
                   <button className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors mb-4"
-                  onClick={() => handleEnrollClick(course.title)}>
+                    onClick={() => handleEnrollClick(course.title)}>
                     Enroll Now
                   </button>
                   <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-3">
@@ -178,7 +183,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
                       <svg className="w-5 h-5 text-blue-600 dark:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
-                      <span>{course.modules?.reduce((acc, mod) => 
+                      <span>{course.modules?.reduce((acc, mod) =>
                         acc + (mod.videos?.filter(vid => vid.quiz)?.length || 0), 0)} quizzes</span>
                     </li>
                     <li className="flex items-center gap-3">

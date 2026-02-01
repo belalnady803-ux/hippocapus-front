@@ -5,7 +5,7 @@ import { API_URL } from "../store/authStore";
 const fetchCourseDetails = async (courseId) => {
   try{
     const res = await axios.get(`${API_URL}/user/courses/${courseId}/modules`);
-    return res.data.modules;
+    return res.data.data.modules;
   }catch(err){
     console.log(err);
   }

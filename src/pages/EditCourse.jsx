@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router";
 import { FiEdit } from "react-icons/fi";
@@ -15,72 +15,77 @@ const EditCourse = () => {
 
 
   const [courseData, setCourseData] = useState({
-        title: "",
-        description: "",
-        price: "",
-        image: "",
-        modules: [],
-        instructors: [],
-        reviews: [],
-    });
+    title: "",
+    description: "",
+    price: "",
+    image: "",
+    modules: [],
+    instructors: [],
+    reviews: [],
+    level: "0",
+  });
 
   const [editableFields, setEditableFields] = useState({
-        title: false,
-        description: false,
-        price: false,
-        image: false,
-    });
+    title: false,
+    description: false,
+    price: false,
+    image: false,
+    level: false,
+  });
 
   const [loading, setLoading] = useState(false);
 
-    // Determine the API base URL based on the environment
+  // Determine the API base URL based on the environment
 
-    // Fetch course on mount
+  // Fetch course on mount
   useEffect(() => {
-        const fetchCourse = async () => {
-            try {
+    const fetchCourse = async () => {
+      try {
         const { data } = await axios.get(`${API_URL}/courses/${id}`);
+        console.log(data);
         setCourseData({
-            title: data.title || "",
-            description: data.description || "",
-            price: data.price || "",
-            image: data.image || "",
-            modules: data.modules || [],
-            instructors: data.instructors || [],
-            reviews: data.reviews || [],
+          title: data.data.title || "",
+          description: data.data.description || "",
+          price: data.data.price || "",
+          image: data.data.image || "",
+          level: data.data.level || "0",
+          modules: data.data.modules || [],
+          instructors: data.data.instructors || [],
+          reviews: data.data.reviews || [],
         });
-        } catch (error) {
-            console.error("Failed to fetch course:", error);
-            alert("Failed to load course data.");
-        }
+      } catch (error) {
+        console.error("Failed to fetch course:", error);
+        alert("Failed to load course data.");
+      }
     };
     fetchCourse();
   }, [id, API_URL]); // Add apiBaseURL as a dependency
 
   const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCourseData({ ...courseData, [name]: value });
+    const { name, value } = e.target;
+    setCourseData({ ...courseData, [name]: value });
   };
 
   const toggleEdit = (field) => {
-        setEditableFields({ ...editableFields, [field]: !editableFields[field] });
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const payload = {
-                title: courseData.title,
-                description: courseData.description,
-                price: Number(courseData.price) || 0,
-                image: courseData.image,
-            };
-            await axios.put(`${API_URL}/admin/courses/${id}`, payload);
-            alert("Course updated successfully!");
-        } catch (error) {
-            console.error("Failed to update course:", error);
-            alert("Failed to update course.");
-        } finally {
+    setEditableFields({ ...editableFields, [field]: !editableFields[field] });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const payload = {
+        title: courseData.title,
+        description: courseData.description,
+        price: Number(courseData.price) || 0,
+        image: courseData.image,
+        level: courseData.level,
+      };
+      await axios.put(`${API_URL}/admin/courses/${id}`, payload);
+      alert("Course updated successfully!");
+    } catch (error) {
+      console.error("Failed to update course:", error);
+      alert("Failed to update course.");
+    } finally {
       setLoading(false);
     }
   };
@@ -95,7 +100,7 @@ const EditCourse = () => {
         email,
         courseId: id,
       });
-        setAddUserFailed(response.data.message);
+      setAddUserFailed(response.data.message);
       document.getElementById('add-user').value = '';
     } catch (error) {
       console.error(error);
@@ -124,8 +129,8 @@ const EditCourse = () => {
   const inputBase = "w-full px-4 py-2 border rounded-lg transition";
   const inputEnabled = "outline-none border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white";
   const inputDisabled = "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 cursor-not-allowed";
-  
-  const getInputClassName = (isDisabled) => 
+
+  const getInputClassName = (isDisabled) =>
     `${inputBase} ${isDisabled ? inputDisabled : inputEnabled}`;
 
   return (
@@ -181,6 +186,35 @@ const EditCourse = () => {
             </div>
           ))}
 
+          {/* Level (Separate because it is a select) */}
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Level
+            </label>
+            <div className="flex items-center">
+              <select
+                name="level"
+                value={courseData.level}
+                onChange={handleChange}
+                className={`${getInputClassName(!editableFields.level || loading)} ${!editableFields.level ? 'opacity-75' : ''}`}
+                disabled={!editableFields.level || loading}
+              >
+                <option value={0}>Level 0</option>
+                <option value={1}>Level 1</option>
+                <option value={2}>Level 2</option>
+                <option value={3}>Level 3</option>
+              </select>
+              <button
+                type="button"
+                onClick={() => toggleEdit('level')}
+                className="ml-2 text-blue-600 hover:text-blue-800 flex items-center"
+              >
+                <FiEdit className="mr-1" />
+                {editableFields.level ? "Lock" : "Edit"}
+              </button>
+            </div>
+          </div>
+
           {/* Modules */}
           <div className="space-y-3">
             <div className="flex justify-between items-center">
@@ -198,8 +232,8 @@ const EditCourse = () => {
             {courseData.modules && courseData.modules.length > 0 ? (
               <ul className="space-y-2">
                 {courseData.modules.map((m) => (
-                  <li 
-                    key={m._id} 
+                  <li
+                    key={m._id}
                     className="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                   >
                     <span className="text-gray-800 dark:text-gray-200">{m.title || 'Untitled Module'}</span>
@@ -244,16 +278,16 @@ const EditCourse = () => {
             {courseData.instructors && courseData.instructors.length > 0 ? (
               <ul className="space-y-2">
                 {courseData.instructors.map((i) => (
-                  <li 
-                    key={i._id} 
+                  <li
+                    key={i._id}
                     className="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                   >
                     <div className="flex items-center space-x-2">
                       <span className="text-gray-800 dark:text-gray-200">{i.name || 'Unnamed Instructor'}</span>
                       {i.image && (
-                        <img 
-                          src={i.image} 
-                          alt={i.name} 
+                        <img
+                          src={i.image}
+                          alt={i.name}
                           className="h-6 w-6 rounded-full object-cover"
                           onError={(e) => {
                             e.target.onerror = null;
@@ -321,8 +355,8 @@ const EditCourse = () => {
             {courseData.reviews && courseData.reviews.length > 0 ? (
               <ul className="space-y-2">
                 {courseData.reviews.slice(0, 3).map((r) => (
-                  <li 
-                    key={r._id} 
+                  <li
+                    key={r._id}
                     className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                   >
                     <div className="flex justify-between items-start">
@@ -375,10 +409,10 @@ const EditCourse = () => {
           {/* add user to this course */}
           <label htmlFor="add-user" className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             Add User
-          </label>  
+          </label>
           <input
             type="text"
-            id="add-user" 
+            id="add-user"
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
           />
           <button type="button" onClick={addUserToCourse} className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -387,12 +421,12 @@ const EditCourse = () => {
           {addUserMessage && <p className="mt-2 text-green-600 font-medium">{addUserMessage}</p>}
           {addUserFailed && <p className="mt-2 text-red-600 font-medium">{addUserFailed}</p>}
           {/* remove user form this course */}
-                    <label htmlFor="remove-user" className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <label htmlFor="remove-user" className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             remove User
-          </label>  
+          </label>
           <input
             type="text"
-            id="remove-user" 
+            id="remove-user"
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
           />
           <button type="button" onClick={removeUserFromCourse} className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -414,7 +448,7 @@ const EditCourse = () => {
             </button>
           </div>
         </form>
-    </div>
+      </div>
     </div>
   )
 };

@@ -1,8 +1,9 @@
 import { Form, redirect, useActionData, useNavigation, Link } from "react-router";
 import { FaCircleExclamation } from "react-icons/fa6";
 import registerPhoto from "../assets/register photo.jpg";
+import Button from "../components/Button";
 import { useAuthStore } from "../store/authStore.js";
-  // ⬅ import both
+// ⬅ import both
 export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
@@ -68,7 +69,7 @@ const SignUp = () => {
         </p>
         <Form className="flex flex-col gap-5 pt-8 pb-4" method="POST" replace>
           {/* ... Name Input ... */}
-                    <div>
+          <div>
             <label
               htmlFor="name-input"
               className="block text-sm font-medium text-p3 dark:text-[#94ABC7] mb-2"
@@ -77,7 +78,7 @@ const SignUp = () => {
             </label>
             <input
               id="name-input"
-              type="text" 
+              type="text"
               name="name"
               required
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -100,7 +101,7 @@ const SignUp = () => {
               placeholder="e.g., +1234567890"
             />
           </div>
-                    <div>
+          <div>
             <label
               htmlFor="email-input"
               className="block text-sm font-medium text-p3 dark:text-[#94ABC7] mb-2"
@@ -109,7 +110,7 @@ const SignUp = () => {
             </label>
             <input
               id="email-input"
-              type="email" 
+              type="email"
               name="email"
               required
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -125,25 +126,24 @@ const SignUp = () => {
             </label>
             <input
               id="password-input"
-              type="password" 
+              type="password"
               name="password"
               required
               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               placeholder="Enter your password"
             />
           </div>
-          <button
+          <Button
             type="submit"
             disabled={navigation.state === "submitting"}
-            className="w-full justify-center rounded-md bg-p1 px-3 py-3 text-sm font-semibold leading-6 text-p2 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
-          >
-            {navigation.state === "submitting" ? "Registering..." : "Sign Up"}
-          </button>
+            className="w-full h-auto py-3 rounded-md" // Overriding strict height to match original feel if needed, but sticking to Button's style mostly.
+            text={navigation.state === "submitting" ? "Registering..." : "Sign Up"}
+          />
         </Form>
-        
+
         {error && (
           <div className="flex gap-4 items-center pl-4">
-            <FaCircleExclamation className="text-red-500"/>
+            <FaCircleExclamation className="text-red-500" />
             <p className="text-red-500">{error}</p>
           </div>
         )}
@@ -163,7 +163,7 @@ const SignUp = () => {
 
         <div className="w-full  bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
 
-          <img src={registerPhoto} alt="register photo"  className="rounded-2xl"/>
+          <img src={registerPhoto} alt="register photo" className="rounded-2xl" />
 
         </div>
 

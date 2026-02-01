@@ -42,17 +42,16 @@ const AddModule = ({ courseId: propCourseId }) => {
         moduleData,
       );
       console.log(response.data);
-
       if (response.data.success) {
         toast.success('Module created successfully!');
         // Redirect to the module page
-        navigate(`/admin/courses/${courseId}/modules/${response.data.module}`);
+        navigate(`/admin/courses/${courseId}/modules/${response.data.data.module}`);
       } else {
         throw new Error(response.data.message || 'Failed to create module');
       }
     } catch (error) {
       console.error('Error creating module:', error);
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to create module';
+      const errorMessage = error.response?.data?.data?.message || error.message || 'Failed to create module';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {

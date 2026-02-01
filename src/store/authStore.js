@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
+// https://api.hippocampus-academy.com/api
 
-export const API_URL = "https://api.hippocampus-academy.com/api";
+export const API_URL = "https://render.hippocampus-academy.com/api";
 // export const API_URL = "http://localhost:8000/api";
 axios.defaults.withCredentials = true;
 
@@ -15,7 +16,7 @@ export const useAuthStore = create((set) => ({
 	signup: async (email, password, fullName , phoneNumber) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/auth/singup`, { email, password, fullName , phoneNumber });
+			const response = await axios.post(`${API_URL}/auth/signup`, { email, password, fullName , phoneNumber });
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
@@ -26,10 +27,10 @@ export const useAuthStore = create((set) => ({
 	login: async (email, password) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/auth/log-in`, { email, password });
+			const response = await axios.post(`${API_URL}/auth/login`, { email, password });
 			set({
 				isAuthenticated: true,
-				user: response.data.user,
+				user: response.data.data.user,
 				error: null,
 				isLoading: false,
 			});
@@ -53,7 +54,7 @@ export const useAuthStore = create((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axios.post(`${API_URL}/auth/verify-email`, { verificationToken });
-			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+			set({ user: response.data.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
 			set({ error: error.response.data.message || "Error verifying email", isLoading: false });
@@ -64,7 +65,7 @@ export const useAuthStore = create((set) => ({
 		set({ isCheckingAuth: true, error: null });
 		try {
 			const response = await axios.get(`${API_URL}/auth/check-auth`);
-			set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
+			set({ user: response.data.data.user, isAuthenticated: true, isCheckingAuth: false });
 		} catch (error) {
 			set({ error: null, isCheckingAuth: false, isAuthenticated: false });
 		}

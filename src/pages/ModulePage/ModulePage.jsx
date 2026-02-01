@@ -1,7 +1,7 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "axios";
-import  toast  from "react-hot-toast";
+import toast from "react-hot-toast";
 import ModuleHeader from "./ModuleHeader";
 import ModuleForm from "./ModuleForm";
 import ModuleTabs from "./ModuleTabs";
@@ -14,7 +14,6 @@ import { API_URL } from "../../store/authStore";
 
 const ModulePage = () => {
   const { courseId, moduleId } = useParams();
-  if(moduleId === "new") return <AddModule courseId={courseId} />;
   const navigate = useNavigate();
   const [moduleData, setModuleData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +25,7 @@ const ModulePage = () => {
   const [formData, setFormData] = useState({
     title: "",
     isPublished: false,
-    price : "",
+    price: "",
   });
   const [addEmail, setAddEmail] = useState("");
   const [removeEmail, setRemoveEmail] = useState("");
@@ -34,17 +33,19 @@ const ModulePage = () => {
   // Determine the API base URL based on the environment
   // Fetch module (with videos inside)
   useEffect(() => {
+    if (moduleId === "new") return; // Don't fetch if creating new
+
     const fetchModule = async () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
           `${API_URL}/admin/courses/${courseId}/modules/${moduleId}`
         );
-        setModuleData(data);
+        setModuleData(data.data);
         setFormData({
-          title: data.title || "",
-          isPublished: data.isPublished || false,
-          price : data.price || ""
+          title: data.data.title || "",
+          isPublished: data.data.isPublished || false,
+          price: data.data.price || ""
         });
       } catch (err) {
         const errorMsg = err.response?.data?.message || "Failed to load module data";
@@ -57,6 +58,8 @@ const ModulePage = () => {
 
     fetchModule();
   }, [courseId, moduleId, API_URL]); // Add apiBaseURL as a dependency
+
+  if (moduleId === "new") return <AddModule courseId={courseId} />;
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -128,7 +131,7 @@ const ModulePage = () => {
     setFormData({
       title: moduleData.title,
       isPublished: moduleData.isPublished,
-      price : moduleData.price
+      price: moduleData.price
     });
     setIsEditing(false);
   };

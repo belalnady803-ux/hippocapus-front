@@ -26,6 +26,7 @@ const VideoRow = ({ video, courseId, moduleId, onDelete }) => {
       const response = await axios.delete(
         `${API_URL}/admin/courses/${courseId}/modules/${moduleId}/video/${videoId}`,
       );
+      console.log(response.data);
       if (response.data?.success) {
         toast.success("Video deleted successfully");
         onDelete(videoId); // Call the onDelete function to update the UI

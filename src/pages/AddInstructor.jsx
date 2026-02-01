@@ -34,7 +34,6 @@ const { courseId} = useParams();
         `${API_URL}/admin/courses/${courseId}/instructor`,
         formData,
       );
-
       if (response.data.success) {
         toast.success('Instructor added successfully!');
         navigate(`/admin/courses/${courseId}/edit`);
@@ -49,7 +48,7 @@ const { courseId} = useParams();
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-24">
       <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">Add New Instructor</h1>

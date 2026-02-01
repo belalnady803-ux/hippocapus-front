@@ -16,7 +16,7 @@ const fetchSubscribedCourses = async () => {
     throw new Error("Failed to fetch courses");
   }
   const data = await response.json();
-  return data.uniqueCourses || [];
+  return data.data.uniqueCourses || [];
 };
 
 function MyCourses() {
@@ -40,17 +40,14 @@ function MyCourses() {
   }
   if (!courses || courses.length === 0) {
     return (
-      <section className="container pt-28 text-center min-h-screen">
+      <section className="container pt-28 text-center min-h-screen flex flex-col items-center justify-center">
         <h1 className="text-4xl font-black dark:text-p4 mb-4">My Courses</h1>
         <p className="text-lg text-p3 dark:text-[#94ABC7]">
           You haven't enrolled in any courses yet.
         </p>
-        <Link
-          to="/courses/"
-          className="mt-6 inline-block bg-p1 text-p2 rounded-full py-3 px-6 font-semibold hover:opacity-90 transition-opacity"
-        >
-          Browse Courses
-        </Link>
+        <Button text="Browse Courses" className="w-54 h-12 mt-6 text-6xl" onClick={() => window.location.href = "/courses"}>
+        </Button>
+
       </section>
     );
   }

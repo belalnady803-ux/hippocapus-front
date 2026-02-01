@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { FiPlus } from "react-icons/fi";
 import { API_URL } from '../store/authStore';
+import { toast } from "react-hot-toast";
 
 
 const AddCourse = () => {
@@ -13,6 +14,7 @@ const AddCourse = () => {
     description: "",
     price: "",
     image: "",
+    level: "0", // Default to Level 0
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,11 +35,11 @@ const AddCourse = () => {
       };
 
       await axios.post(`${API_URL}/admin/courses`, payload);
-      alert("Course added successfully!");
+      toast.success("Course added successfully!");
       navigate("/admin");
     } catch (error) {
       console.error("Error adding course:", error);
-      alert("Failed to add course. Check console for details.");
+      toast.error("Failed to add course. Check console for details.");
     } finally {
       setLoading(false);
     }
@@ -105,6 +107,26 @@ const AddCourse = () => {
               placeholder="e.g. 299"
               disabled={loading}
             />
+          </div>
+
+          {/* Level */}
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Level
+            </label>
+            <select
+              name="level"
+              value={courseData.level}
+              onChange={handleChange}
+              className={className}
+              required
+              disabled={loading}
+            >
+              <option value={0}>Level 0</option>
+              <option value={1}>Level 1</option>
+              <option value={2}>Level 2</option>
+              <option value={3}>Level 3</option>
+            </select>
           </div>
 
           {/* Image */}

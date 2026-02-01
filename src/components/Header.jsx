@@ -5,7 +5,7 @@ import { IoMdClose } from "react-icons/io";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import clsx from 'clsx';
-import { pages } from "../assets/data"
+import { pages } from "../assets/data.jsx"
 import {useState} from "react"
 import UserProfile from './UserProfile';
 import {useAuthStore} from '../store/authStore';

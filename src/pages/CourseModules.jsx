@@ -13,7 +13,7 @@ export default function CourseModules() {
     async function fetchCourse() {
       try {
         const res = await axios.get(`${API_URL}/courses/${id}/modules`);
-        setModules(res.data.filter(mod => mod.isPublished));
+        setModules(res.data.data.filter(mod => mod.isPublished));
       } catch (err) {
         console.error("Failed to fetch course:", err);
         setError("Failed to load course details. Please try again later.");

@@ -20,7 +20,8 @@ const UserModuleDetails = () => {
         const fetchModule = async () => {
             try {
                 const res = await axios.get(`${API_URL}/user/courses/${id}/modules/${moduleId}`);
-                setVideos(res.data);
+                console.log(res.data);
+                setVideos(res.data.data);
             } catch (err) {
                 setError("Failed to fetch module details.");
             } finally {
