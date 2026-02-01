@@ -26,7 +26,7 @@ export async function action({ request }) {
     // so check for a `user` to determine success.
     const response = await signup(email, password, fullName, phoneNumber);
 
-    if (response && response.user) {
+    if (response && (response.user || (response.data && response.data.user))) {
       return redirect("/verify-email");
     }
 

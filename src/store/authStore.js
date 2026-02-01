@@ -13,11 +13,11 @@ export const useAuthStore = create((set) => ({
 	isLoading: false,
 	isCheckingAuth: true,
 	message: null,
-	signup: async (email, password, fullName , phoneNumber) => {
+	signup: async (email, password, fullName, phoneNumber) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/auth/signup`, { email, password, fullName , phoneNumber });
-			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+			const response = await axios.post(`${API_URL}/auth/signup`, { email, password, fullName, phoneNumber });
+			set({ user: response.data.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
 			set({ error: error.response.data.message || "Error signing up", isLoading: false });
