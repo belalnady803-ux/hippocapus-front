@@ -2,8 +2,8 @@ import { create } from "zustand";
 import axios from "axios";
 // https://api.hippocampus-academy.com/api
 
-// export const API_URL = "https://render.hippocampus-academy.com/api";
-export const API_URL = "http://localhost:8000/api";
+export const API_URL = "https://render.hippocampus-academy.com/api";
+// export const API_URL = "http://localhost:8000/api";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
