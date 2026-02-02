@@ -69,7 +69,7 @@ export default function VideoPlayerPage() {
   const isPreview = useSearchParams()[0].get("preview") === "true";
 
 
-  const endPoint = isPreview ? `${API_URL}/courses/${id}/modules/${moduleId}/video/${videoId}/free` : `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
+  const endPoint = isPreview ? `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}/free` : `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
 
   useEffect(() => {
     if (isCheckingAuth) return;
