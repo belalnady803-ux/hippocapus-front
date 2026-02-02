@@ -66,9 +66,10 @@ export default function VideoPlayerPage() {
   const [quiz, setQuiz] = useState(null);
   const [showQuizIntro, setShowQuizIntro] = useState(false);
   const [isPlayingQuiz, setIsPlayingQuiz] = useState(false);
+  const isPreview = useSearchParams()[0].get("preview") === "true";
 
 
-  const endPoint = `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
+  const endPoint = isPreview ? `${API_URL}/courses/${id}/modules/${moduleId}/video/${videoId}/free` : `${API_URL}/user/courses/${id}/modules/${moduleId}/video/${videoId}`;
 
   useEffect(() => {
     if (isCheckingAuth) return;
@@ -76,11 +77,7 @@ export default function VideoPlayerPage() {
     async function fetchVideoDetails() {
       try {
         setLoading(true);
-        const res = await axios.get(endPoint,
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axios.get(endPoint);
         console.log("Video API Response:", res.data); // Debugging
         // Handle potential variations in API response structure
         const videoData = res.data.data || res.data.video || res.data.result;
@@ -103,11 +100,7 @@ export default function VideoPlayerPage() {
             // Also check quiz for fallback
             if (res.data.quiz) {
               try {
-                const quizRes = await axios.get(`${API_URL}/quizzes/${res.data.quiz}`,
-                  {
-                    withCredentials: true,
-                  }
-                );
+                const quizRes = await axios.get(`${API_URL}/quizzes/${res.data.quiz}`);
                 setQuiz(quizRes.data.data);
               } catch (quizErr) {
                 console.error("Failed to fetch quiz:", quizErr);
