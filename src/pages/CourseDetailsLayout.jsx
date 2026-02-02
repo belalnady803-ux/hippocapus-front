@@ -6,7 +6,7 @@ import axios from "axios";
 import SEO from "../components/SEO";
 
 const CourseDetailsLayout = () => { // Changed to a React component
-  const number = "966566292547";
+  const number = "01092843166";
   const navigate = useNavigate();
   const { openWhatsApp } = useWhatsApp(number);
   const { isAuthenticated } = useAuthStore();
@@ -77,9 +77,9 @@ const CourseDetailsLayout = () => { // Changed to a React component
 
   // Determine active tab based on current location
   const getActiveTab = () => {
-    if (location.pathname.includes('/modules')) return 'modules';
+    if (location.pathname.includes('/overview')) return 'overview';
     if (location.pathname.includes('/reviews')) return 'reviews';
-    return 'overview';
+    return 'modules';
   };
 
   const activeTab = getActiveTab();
@@ -127,6 +127,15 @@ const CourseDetailsLayout = () => { // Changed to a React component
               <nav className="flex space-x-8">
                 <Link
                   to={`/courses/${id}`}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'modules'
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
+                >
+                  Subjects
+                </Link>
+                <Link
+                  to={`/courses/${id}/overview`}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'overview'
                     ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
@@ -134,15 +143,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
                 >
                   Overview
                 </Link>
-                <Link
-                  to={`/courses/${id}/modules`}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'modules'
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
-                    }`}
-                >
-                  subjects
-                </Link>
+
                 <Link
                   to={`/courses/${id}/reviews`}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === 'reviews'
@@ -205,7 +206,7 @@ const CourseDetailsLayout = () => { // Changed to a React component
           </div>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
 
