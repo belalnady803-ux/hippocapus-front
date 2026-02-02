@@ -76,7 +76,11 @@ export default function VideoPlayerPage() {
     async function fetchVideoDetails() {
       try {
         setLoading(true);
-        const res = await axios.get(endPoint);
+        const res = await axios.get(endPoint,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("Video API Response:", res.data); // Debugging
         // Handle potential variations in API response structure
         const videoData = res.data.data || res.data.video || res.data.result;
@@ -99,7 +103,11 @@ export default function VideoPlayerPage() {
             // Also check quiz for fallback
             if (res.data.quiz) {
               try {
-                const quizRes = await axios.get(`${API_URL}/quizzes/${res.data.quiz}`);
+                const quizRes = await axios.get(`${API_URL}/quizzes/${res.data.quiz}`,
+                  {
+                    withCredentials: true,
+                  }
+                );
                 setQuiz(quizRes.data.data);
               } catch (quizErr) {
                 console.error("Failed to fetch quiz:", quizErr);
