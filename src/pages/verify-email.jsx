@@ -10,22 +10,14 @@ const VerifyEmailPage = () => {
   const { verifyEmail, isLoading, error } = useAuthStore();
 
   const handleChange = (index, value) => {
+    // Modify to only allow numbers
+    if (!/^\d*$/.test(value)) return;
+
     const newCode = [...code];
-
-    if (value.length > 1) {
-      const pasted = value.slice(0, 6).split("");
-      for (let i = 0; i < 6; i++) {
-        newCode[i] = pasted[i] || "";
-      }
-      setCode(newCode);
-      const focusIndex = newCode.findIndex((v) => v === "");
-      inputRefs.current[focusIndex >= 0 ? focusIndex : 5].focus();
-      return;
-    }
-
     newCode[index] = value;
     setCode(newCode);
 
+    // Auto-focus next input if a digit is entered
     if (value && index < 5) {
       inputRefs.current[index + 1].focus();
     }
@@ -35,6 +27,28 @@ const VerifyEmailPage = () => {
     if (e.key === "Backspace" && !code[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text");
+    if (!pastedData) return;
+
+    // Extract only digits
+    const digits = pastedData.replace(/\D/g, "").split("").slice(0, 6);
+
+    if (digits.length === 0) return;
+
+    const newCode = [...code];
+    digits.forEach((digit, i) => {
+      newCode[i] = digit;
+    });
+
+    setCode(newCode);
+
+    // Focus the next empty slot or the last one
+    const nextIndex = digits.length < 6 ? digits.length : 5;
+    inputRefs.current[nextIndex].focus();
   };
 
   const handleSubmit = async (e) => {
@@ -78,6 +92,8 @@ const VerifyEmailPage = () => {
                 value={digit}
                 onChange={(e) => handleChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
+                onPaste={handlePaste}
+                inputMode="numeric"
                 maxLength="1"
                 className="w-12 h-12 text-center text-xl font-bold border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
