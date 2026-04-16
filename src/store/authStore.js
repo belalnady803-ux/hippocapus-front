@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import axios from "axios";
-// https://api.hippocampus-academy.com/api
 
 export const API_URL = "https://hippocampus-backend-sl2n.onrender.com/api";
 // export const API_URL = "http://localhost:8000/api";
