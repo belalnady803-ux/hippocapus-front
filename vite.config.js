@@ -6,4 +6,12 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://hippocampus-backend-sl2n.onrender.com',
+        changeOrigin: true,
+      },
+    },
+  },
 })
