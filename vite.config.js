@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://hippocampus-backend-sl2n.onrender.com',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     },

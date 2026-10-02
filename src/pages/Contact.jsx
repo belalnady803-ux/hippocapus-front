@@ -169,40 +169,6 @@ const Contact = () => {
             </div>
           </form>
         </div>
-
-        {/* Column 2: Contact Info */}
-        {/* <div className="bg-white dark:bg-[#1C1F24] p-8 md:p-10 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold dark:text-p4 mb-6">Contact Information</h2>
-          <div className="flex flex-col gap-8 text-gray-600 dark:text-[#94ABC7]">
-            <div className="flex items-start gap-4">
-              <MdOutlineEmail className="text-3xl text-p1" />
-              <div>
-                <h4 className="font-semibold text-p2 dark:text-p4">Email</h4>
-                <a href="mailto:support@hippocampus.com" className="hover:text-p1 transition">
-                  support@hippocampus.com
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <MdOutlinePhone className="text-3xl text-p1" />
-              <div>
-                <h4 className="font-semibold text-p2 dark:text-p4">Phone</h4>
-                <a href="tel:+966566292547" className="hover:text-p1 transition">
-                  +966 56 629 2547
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <MdOutlineLocationOn className="text-3xl text-p1" />
-              <div>
-                <h4 className="font-semibold text-p2 dark:text-p4">Address</h4>
-                <p>123 Academy Lane, Medville, MD 54321</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </main>
   );

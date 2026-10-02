@@ -1,9 +1,61 @@
 import { create } from "zustand";
 import axios from "axios";
 
-export const API_URL = "/api";
-// export const API_URL = "http://localhost:8000/api";
+// export const API_URL = "/api";
+export const API_URL = "http://localhost:8000/api";
 axios.defaults.withCredentials = true;
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+	failedQueue.forEach(prom => {
+		if (error) {
+			prom.reject(error);
+		} else {
+			prom.resolve(token);
+		}
+	});
+	failedQueue = [];
+};
+
+axios.interceptors.response.use(
+	(response) => response,
+	async (error) => {
+		const originalRequest = error.config;
+
+		if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== `${API_URL}/auth/login` && originalRequest.url !== `${API_URL}/auth/refresh`) {
+			if (isRefreshing) {
+				return new Promise(function(resolve, reject) {
+					failedQueue.push({ resolve, reject });
+				}).then(token => {
+					return axios(originalRequest);
+				}).catch(err => {
+					return Promise.reject(err);
+				});
+			}
+
+			originalRequest._retry = true;
+			isRefreshing = true;
+
+			try {
+				await axios.post(`${API_URL}/auth/refresh`);
+				isRefreshing = false;
+				processQueue(null);
+				return axios(originalRequest);
+			} catch (refreshError) {
+				isRefreshing = false;
+				processQueue(refreshError, null);
+				
+				// Automatically log out user if refresh fails completely
+				useAuthStore.getState().logout();
+				return Promise.reject(refreshError);
+			}
+		}
+
+		return Promise.reject(error);
+	}
+);
 
 export const useAuthStore = create((set) => ({
 	user: null,
@@ -38,6 +90,21 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
+	googleLogin: async (token) => {
+		set({ isLoading: true, error: null });
+		try {
+			const response = await axios.post(`${API_URL}/auth/google`, { token });
+			set({
+				isAuthenticated: true,
+				user: response.data.data.user,
+				error: null,
+				isLoading: false,
+			});
+		} catch (error) {
+			set({ error: error.response?.data?.message || "Error logging in with Google", isLoading: false });
+			throw error;
+		}
+	},
 	logout: async () => {
 		set({ isLoading: true, error: null });
 		try {
@@ -49,14 +116,14 @@ export const useAuthStore = create((set) => ({
 			throw error;
 		}
 	},
-	verifyEmail: async (verificationToken) => {
+	verifyEmail: async (email, verificationToken) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/auth/verify-email`, { verificationToken });
+			const response = await axios.post(`${API_URL}/auth/verify-email`, { email, verificationToken });
 			set({ user: response.data.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
-			set({ error: error.response.data.message || "Error verifying email", isLoading: false });
+			set({ error: error.response?.data?.message || "Error verifying email", isLoading: false });
 			throw error;
 		}
 	},
@@ -85,7 +152,7 @@ export const useAuthStore = create((set) => ({
 	resetPassword: async (token, password) => {
 		set({ isLoading: true, error: null });
 		try {
-			const response = await axios.post(`${API_URL}/auth/reset-password/${token}`, { password });
+			const response = await axios.post(`${API_URL}/auth/reset-password`, { token, password });
 			set({ message: response.data.message, isLoading: false });
 		} catch (error) {
 			set({
