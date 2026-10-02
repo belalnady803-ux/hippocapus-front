@@ -24,7 +24,7 @@ axios.interceptors.response.use(
 	async (error) => {
 		const originalRequest = error.config;
 
-		if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== `${API_URL}/auth/login` && originalRequest.url !== `${API_URL}/auth/refresh`) {
+		if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== `${API_URL}/auth/login` && originalRequest.url !== `${API_URL}/auth/refresh` && originalRequest.url !== `${API_URL}/auth/logout`) {
 			if (isRefreshing) {
 				return new Promise(function(resolve, reject) {
 					failedQueue.push({ resolve, reject });
@@ -47,8 +47,8 @@ axios.interceptors.response.use(
 				isRefreshing = false;
 				processQueue(refreshError, null);
 				
-				// Automatically log out user if refresh fails completely
-				useAuthStore.getState().logout();
+				// Automatically log out user locally if refresh fails completely
+				useAuthStore.setState({ user: null, isAuthenticated: false, error: null, isLoading: false });
 				return Promise.reject(refreshError);
 			}
 		}
