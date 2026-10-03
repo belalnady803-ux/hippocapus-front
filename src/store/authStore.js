@@ -68,6 +68,7 @@ export const useAuthStore = create((set) => ({
 		set({ isLoading: true, error: null });
 		try {
 			const response = await axios.post(`${API_URL}/auth/signup`, { email, password, fullName, phoneNumber });
+			localStorage.setItem('pendingVerificationEmail', email);
 			set({ user: response.data.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
@@ -118,8 +119,14 @@ export const useAuthStore = create((set) => ({
 	},
 	verifyEmail: async (email, verificationToken) => {
 		set({ isLoading: true, error: null });
+		const emailToUse = email || localStorage.getItem('pendingVerificationEmail');
+		if (!emailToUse) {
+			set({ error: "Email not found. Please sign up again.", isLoading: false });
+			throw new Error("Email not found");
+		}
 		try {
-			const response = await axios.post(`${API_URL}/auth/verify-email`, { email, verificationToken });
+			const response = await axios.post(`${API_URL}/auth/verify-email`, { email: emailToUse, verificationToken });
+			localStorage.removeItem('pendingVerificationEmail');
 			set({ user: response.data.data.user, isAuthenticated: true, isLoading: false });
 			return response.data;
 		} catch (error) {
