@@ -163,8 +163,7 @@ const SignUp = () => {
           />
         </Form>
 
-        {/* TODO: Google Login - To be implemented in next update */}
-        {/* <div className="flex items-center my-4">
+        <div className="flex items-center my-4">
           <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
           <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">or</span>
           <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
@@ -177,9 +176,9 @@ const SignUp = () => {
             className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm"
           >
             <FcGoogle className="text-2xl" />
-            Sign in with Google
+            Sign up with Google
           </button>
-        </div> */}
+        </div>
 
         {error && (
           <div className="flex gap-4 items-center pl-4">

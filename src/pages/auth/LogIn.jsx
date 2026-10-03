@@ -23,7 +23,12 @@ const Login = () => {
         e.preventDefault();
         try {
             await login(email, password);
-            navigate("/");
+            const user = useAuthStore.getState().user;
+            if (user && !user.isVerified) {
+                navigate("/verify-email");
+            } else {
+                navigate("/");
+            }
         } catch (err) {
             // Prefer backend message (axios error shape) over generic status text
             const backendMessage = err?.response?.data?.message || err?.message || "Login failed";
@@ -36,7 +41,12 @@ const Login = () => {
         onSuccess: async (tokenResponse) => {
             try {
                 await googleLogin(tokenResponse.access_token);
-                navigate("/");
+                const user = useAuthStore.getState().user;
+                if (user && !user.isVerified) {
+                    navigate("/verify-email");
+                } else {
+                    navigate("/");
+                }
             } catch (err) {
                 const backendMessage = err?.response?.data?.message || err?.message || "Google Login failed";
                 setLocalError(typeof backendMessage === "string" ? backendMessage : JSON.stringify(backendMessage));
@@ -113,7 +123,7 @@ const Login = () => {
                 </Button>
             </form>
 
-            {/* <div className="flex items-center my-4">
+            <div className="flex items-center my-4">
                 <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
                 <span className="mx-4 text-gray-500 dark:text-gray-400 text-sm">or</span>
                 <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
@@ -128,7 +138,7 @@ const Login = () => {
                     <FcGoogle className="text-2xl" />
                     Sign in with Google
                 </button>
-            </div> */}
+            </div>
 
             {(localError || error) && <div className="flex gap-4 items-center pl-4">
                     <FaCircleExclamation  className="text-red-500"/>
